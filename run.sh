@@ -13,5 +13,8 @@ STATSPW="${STATSPW:-\$apr1\$i45VBTjn\$tKkodj3Wxthrn6uZQEn8z1}"
 echo "$STREAMUSER:$STREAMPW" > /usr/local/nginx/conf/.htpasswd_stream
 echo "$STATSUSER:$STATSPW" > /usr/local/nginx/conf/.htpasswd_stats
 
+TARGET="${TARGET:-localhost}"
+
+sed -i -e "s/___TARGET___/$TARGET/g" /srv/www/index.html 
 
 nginx
