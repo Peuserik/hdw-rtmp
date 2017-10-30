@@ -23,10 +23,11 @@ Including hls Streaming. But only in Source Output right now.
 ---
 ## Versions
 
-**nginx version:** 1.10.3
-**[rtmp-module for nginx](https://github.com/arut/nginx-rtmp-module "arut/nginx-rtmp-module")**: branch master
-**Ubuntu:** 16.04
-**[hdw player free](https://www.hdwplayer.com/):** 3.0
+nginx version: 1.10.3
+[rtmp-module for nginx](https://github.com/arut/nginx-rtmp-module "arut/nginx-rtmp-module"): master branch
+Ubuntu: 16.04
+[hdw player free](https://www.hdwplayer.com/): 3.0
+
 ---
 ## How to use
 ### Build and run the image
@@ -93,6 +94,8 @@ STATSPW=page - set the password for the stats page.
 TARGET=localhost - sets the target streampage for the hdw player configuration. Should point to your Server IP adress or DNS Name
 ```
 
+---
+
 ## Set configuration ##
 
 To change the default parameters just override them with the run commmand. The passwords for the basic auth have to be encrypted before given to the run command. For the How see [below](#create-new-passwords) 
@@ -130,5 +133,6 @@ To use it with the image just give it as env variable.
 docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/rtmp
 ```
 
+---
 # ToDo
 To lazy to continue right now.
