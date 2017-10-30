@@ -1,0 +1,86 @@
+# What 
+RTMP Server with integrated minimal hdw player for streaming and watching the stream. 
+Simple basic auth for protecting the content
+
+##### Versions
+##### How to
+##### Extra Configuration
+##### Change users and passwords for access
+###### Create encrypted passwords
+###### Ubuntu
+###### CentOS
+
+
+## Versions
+
+nginx version: 1.10.3
+rtmp_module: master
+ubuntu: 16.04
+hdw player 1.1
+
+## How to
+
+### clone #
+
+git clone ...
+
+### Build #
+
+```
+cd rtmp
+docker build -t peuserik/rtmp .
+```
+
+### run ##
+docker run -d --name rtmp -p 1935:1935 -p 80:80 peuserik/rtmp
+
+### access
+rtmp entrypoint is port 1935
+the minimal web page is hosted on 80
+
+The dafault passwords are shared in the authentification part
+
+## Extra configuration ##
+
+Cause of the CORS you have to change the Domain this content is watched on to your domain.
+default server is tv.peuserik.de
+if other server:
+  change the url in index.html
+
+f.e.
+  localhost to see it on your local PC
+
+
+## Authentification ##
+
+STREAMUSER default live
+STREAMPW default stream
+
+STATSUSER default stats
+STATSPW default page
+
+## Change the default passwords
+
+The Password has to be entered as encrypted string.
+ 
+### Ubuntu ##
+1. Openssl
+
+openssl passwd -apr1
+
+Thias command will prompt you for the password you want to use and then again for a confirmation of that password. 
+It will give you the encrypted password you can use for configurating the htpasswd file.
+
+notice: the password will not be displayed while typing
+
+### Example 
+```
+openssl passwd -apr1
+Password:
+Verifying - Password:
+$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.
+```
+
+To use it with the image just give it as env variable.
+
+docker run --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -p 1935:1935 -p 80:80 peuserik/rtmp
