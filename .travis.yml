@@ -20,5 +20,8 @@ after_success:
   - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
     docker tag $DOCKER_REPO:$TAG $DOCKER_REPO:$TRAVIS_BUILD_NUMBER;
     docker push $DOCKER_REPO:$TRAVIS_BUILD_NUMBER;
+    else
+    docker tag $DOCKER_REPO:$TAG $DOCKER_REPO:$COMMIT;
+    docker push $DOCKER_REPO:$COMMIT;
     fi
   - docker push $DOCKER_REPO:$TAG;
