@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Peuserik/hdw-rtmp.svg?branch=master)](https://travis-ci.org/Peuserik/hdw-rtmp)
+
 # What 
 RTMP Server with integrated minimal hdw player for streaming and watching the stream. 
 Simple basic auth for protecting the content
