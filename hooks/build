@@ -5,5 +5,5 @@
 echo "Build hook running"
 docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
              --build-arg VCS_REF=`git rev-parse --short HEAD` \
-             --build-arg VCS_URL="https://github.com/peuserik/hdw-rtmp" \
+             --build-arg VERSION=`git describe --tags --exact-match || git rev-parse HEAD` \
              -t $IMAGE_NAME .

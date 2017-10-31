@@ -20,6 +20,10 @@ RUN \
 ENV nginx_version 1.12.2
 RUN groupadd nginx && useradd -m -g nginx nginx
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
 # install optional encoder
 # RUN apt-get -y install software-properties-common;\
 #        apt-add-repository ppa:jon-severinsson/ffmpeg;\
@@ -109,3 +113,13 @@ WORKDIR /srv/www
 EXPOSE 1935 80 443
 
 CMD sh ./run.sh
+
+LABEL "maintainer"="peuserik@peuserik.de" \
+      "org.label-schema.base-image.name"="ubuntu" \
+      "org.label-schema.base-image.version"="16.04" \ 
+      "org.label-schema.description"="nginx with rtmp; hls and hdw" \
+      "org.label-schema.vcs-url"="https://github.com/peuserik/hdw-rtmp" \
+      "org.label-schema.schema-version"="1.0.0-rc.1" \
+      "org.label-schema.vcs-ref"=$VCS_REF \
+      "org.label-schema.version"=$VERSION \
+      "org.label-schema.build-date"=$BUILD_DATE 
