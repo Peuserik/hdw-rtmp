@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/Peuserik/hdw-rtmp.svg?branch=master)](https://travis-ci.org/Peuserik/hdw-rtmp)
+[![](http://dockerbuildbadges.quelltext.eu/status.svg?organization=peuserik&repository=hdw-rtmp)](https://hub.docker.com/r/peuserik/hdw-rtmp/builds/)
+
 
 # **Using it on own risk**. There is no TLS implemented yet.
 I'm using basic auth for simple security. Without TLS the username and passwords are transfered in plain text and can be read by every sniffer.
