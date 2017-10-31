@@ -1,7 +1,7 @@
 sudo: required
 language: generic
-service:
-- docker
+services:
+  - docker
 env:
   global:
   - COMMIT=${TRAVIS_COMMIT::8}
