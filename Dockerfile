@@ -17,7 +17,7 @@ RUN \
 	apt-get clean && \
 	apt-get autoclean
 
-ENV nginx_version 1.10.3
+ENV nginx_version 1.12.2
 RUN groupadd nginx && useradd -m -g nginx nginx
 
 # install optional encoder

@@ -26,7 +26,7 @@ Including hls Streaming. But only in Source Output right now.
 ---
 ## Versions
 
-* nginx version: 1.10.3
+* nginx version: 1.12.2
 * [rtmp-module for nginx](https://github.com/arut/nginx-rtmp-module "arut/nginx-rtmp-module"): master branch
 * Ubuntu: 16.04
 * [hdw player free](https://www.hdwplayer.com/): 3.0
@@ -42,13 +42,19 @@ git clone https://github.com/Peuserik/hdw-rtmp.git
 
 ```bash
 cd hdw-rtmp
-docker build -t peuserik/rtmp .
+docker build -t peuserik/hdw-rtmp .
+```
+
+#### Just pull
+* If you just want to use it pull the image from hub.docker.com
+```
+docker pull peuserik/hdw-rtmp
 ```
 
 #### Run ##
 * To start the container with default paramters just use:
 ```bash
-docker run -d --name rtmp -p 1935:1935 -p 80:80 peuserik/rtmp
+docker run -d --name rtmp -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
 ```
 
 ### Access The Services
@@ -103,7 +109,7 @@ TARGET=localhost - sets the target streampage for the hdw player configuration. 
 
 To change the default parameters just override them with the run commmand. The passwords for the basic auth have to be encrypted before given to the run command. For the How see [below](#create-new-passwords) 
 ```bash
-docker run -d --name rtmp -e STREAMUSER=$USER' -e STREAMPW='$ENCRYPTEDPASSWORD' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/rtmp
+docker run -d --name rtmp -e STREAMUSER=$USER' -e STREAMPW='$ENCRYPTEDPASSWORD' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
 ```
 
 ### Create new passwords
@@ -133,7 +139,7 @@ $apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.
 **complete example**
 To use it with the image just give it as env variable.
 ```
-docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/rtmp
+docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
 ```
 
 ---
