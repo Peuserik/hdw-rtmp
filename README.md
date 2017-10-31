@@ -4,9 +4,11 @@
 I'm using basic auth for simple security. Without TLS the username and passwords are transfered in plain text and can be read by every sniffer.
 
 # What is this about
+
 RTMP Server with integrated minimal hdw player for streaming and watching the stream. 
 Simple basic auth for protecting the content
 Including hls Streaming. But only in Source Output right now.
+
 ---
 ## Contents
 
@@ -23,10 +25,10 @@ Including hls Streaming. But only in Source Output right now.
 ---
 ## Versions
 
-nginx version: 1.10.3
-[rtmp-module for nginx](https://github.com/arut/nginx-rtmp-module "arut/nginx-rtmp-module"): master branch
-Ubuntu: 16.04
-[hdw player free](https://www.hdwplayer.com/): 3.0
+* nginx version: 1.10.3
+* [rtmp-module for nginx](https://github.com/arut/nginx-rtmp-module "arut/nginx-rtmp-module"): master branch
+* Ubuntu: 16.04
+* [hdw player free](https://www.hdwplayer.com/): 3.0
 
 ---
 ## How to use
@@ -54,7 +56,7 @@ With default configuration you can access the webplayer on localhost
 rtmp entrypoint is default rtmp port 1935. That means using rtmp default to just:
 `rtmp://localhost/live`
 hls is on 
-`http://localhost/live/$streamapp/index.m3u8`
+`http://localhost/live/$streamkey/index.m3u8`
 
 #### How to test
 With the default configuration you can test the streaming part with for example [OBS Studio](https://obsproject.com/) or [SimpleScreenRecorder](http://www.maartenbaert.be/simplescreenrecorder/) on your local mashine. The streaming part will also work on a remote mashine. Only The build in webplayer needs extra configuration to work on a remote server. How that works and how to change the default password is described in the [Extra configuration](#extra-configuration) part.
@@ -62,7 +64,7 @@ With the default configuration you can test the streaming part with for example 
 #### Test streaming with OBS
 * Run the container
 * In obs change the "Stream Type" to "Custom Streaming Server"
-* In the "URL" field enter the rtmp entrypoint, with default configuration to tet locally its `rtmp://localhost/live`
+* In the "URL" field enter the rtmp entrypoint, with default configuration to set locally its `rtmp://localhost/live`
 * In the "Stream key" field add the stream app name you want to expose your stream on for example "test"
 * Start streaming
 * OBS shows you in the bottom right an output stream bandwith
