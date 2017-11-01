@@ -6,9 +6,11 @@ I'm using basic auth for simple security. Without TLS the username and passwords
 
 # What is this about
 
-RTMP Server with integrated minimal hdw player for streaming and watching the stream. 
-Simple basic auth for protecting the content
-Including hls Streaming. But only in Source Output right now.
+NGINX server with RTMP-module and index page with three players to watch the stream.
+hdw player on the main page - free flash player with rtmp capabilities.
+html5 video tag for DASH player on "mobile" page and for a HLS player for Apple or HLS compatible devices/software
+Simple basic auth for protecting the content.
+But only in Source Output right now.
 
 ---
 ## Contents
@@ -32,6 +34,7 @@ Including hls Streaming. But only in Source Output right now.
 * [hdw player free](https://www.hdwplayer.com/): 3.0
 
 ---
+
 ## How to use
 ### Build and run the image
 #### Clone #
@@ -60,27 +63,34 @@ docker run -d --name rtmp -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
 ### Access The Services
 With default configuration you can access the webplayer on localhost
 `http://localhost`
-rtmp entrypoint is default rtmp port 1935. That means using rtmp default to just:
-`rtmp://localhost/live`
-hls is on 
-`http://localhost/live/$streamkey/index.m3u8`
+You will find an link to the mobile page there for DASH and HLS player
+`http://localhost/mobile.html`
+
+--
+
+ *rtmp* entrypoint is default rtmp port 1935. That means using rtmp with your stream programm defaults to:
+`rtmp://localhost/live/$streamkey`
+ **HLS** direct access for software players t.e. VLC is on 
+`http://localhost/hls/$streamkey/index.m3u8`
+ **DASH**  direct access for software players t.e. VLC is on
+`http://localhost/dash/$streamkey/index.mpd`
 
 #### How to test
-With the default configuration you can test the streaming part with for example [OBS Studio](https://obsproject.com/) or [SimpleScreenRecorder](http://www.maartenbaert.be/simplescreenrecorder/) on your local mashine. The streaming part will also work on a remote mashine. Only The build in webplayer needs extra configuration to work on a remote server. How that works and how to change the default password is described in the [Extra configuration](#extra-configuration) part.
+With the default configuration you can test the streaming part with for example [OBS Studio](https://obsproject.com/) or [SimpleScreenRecorder](http://www.maartenbaert.be/simplescreenrecorder/) on your local mashine. The streaming part will also work on a remote mashine. Only The build in webplayers need extra configuration to work on a remote server. How that works and how to change the default password is described in the [Extra configuration](#extra-configuration) part.
 
 #### Test streaming with OBS
 * Run the container
 * In obs change the "Stream Type" to "Custom Streaming Server"
 * In the "URL" field enter the rtmp entrypoint, with default configuration to set locally its `rtmp://localhost/live`
-* In the "Stream key" field add the stream app name you want to expose your stream on for example "test"
+* In the "Stream key" field add the stream app name you want to expose your stream on for example our default "key"
 * Start streaming
 * OBS shows you in the bottom right an output stream bandwith
 
 #### Test playing the stream with VLC
 * Open [VLC](http://www.videolan.org/vlc/index.html) player
 * Click on "Media" -> "Open Network Stream"
-* Enter the rtmp url from above `rtmp://localhost/live/$streamkey` In our example we used test as stream key. so the url would be `rtmp://localhost/live/test`
-* Or use the hls url like this `http://user:password@localhost/live/$streamkey/index.m3u8` in our example `http://live:stream@localhost/live/test/index.m3u8` 
+* Enter the rtmp url from above `rtmp://localhost/live/$streamkey` In our example we used key as stream key. so the url would be `rtmp://localhost/live/key`
+* Or use the hls url like this `http://user:password@localhost/hls/$streamkey/index.m3u8` in our example `http://live:stream@localhost/hls/key/index.m3u8` 
 
 
 #### Test playing the stream with the hdw player
@@ -101,6 +111,7 @@ STATSUSER=stats - set the user for the stats page.
 STATSPW=page - set the password for the stats page.
 
 TARGET=localhost - sets the target streampage for the hdw player configuration. Should point to your Server IP adress or DNS Name
+KEY=key - set the stream key for your stream. This is only requiered if you want to use the buld in players and change the default stream key you are streaming with.
 ```
 
 ---
@@ -109,7 +120,7 @@ TARGET=localhost - sets the target streampage for the hdw player configuration. 
 
 To change the default parameters just override them with the run commmand. The passwords for the basic auth have to be encrypted before given to the run command. For the How see [below](#create-new-passwords) 
 ```bash
-docker run -d --name rtmp -e STREAMUSER=$USER' -e STREAMPW='$ENCRYPTEDPASSWORD' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
+docker run -d --name rtmp -e STREAMUSER=$USER' -e STREAMPW='$ENCRYPTEDPASSWORD' -e TARGET='my-cool.server.com' -e KEY='mycoolstreamapp' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
 ```
 
 ### Create new passwords
