@@ -1,7 +1,7 @@
 <!=OCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<title>Player</title>
+<title>Peuses Stream Player</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <script type="text/javascript" src="player/js/jquery-3.1.1.js"></script>
@@ -10,22 +10,28 @@
 <link rel="stylesheet" href="player/css/html5.hdwstyles.css" type="text/css" media="all">
 <style>
 @media only screen  and (min-width: 100px) and (max-width: 680px){
-    #player{
-          width: 100% !important;
-                height: 230px !important;
-                    }
+  #player{
+  width: 100% !important;
+  height: 230px !important;
+  }
 }
 
 @media only screen  and (min-width: 768px) and (max-width: 979px){
-    #player{
-          width: 100% !important;
-                height: 320px !important;
-                    }
+  #player{
+  width: 100% !important;
+  height: 320px !important;
+  }
 }
 
 </style>
 </head>
 <body>
+  <CENTER>
+  <h2><b>HDW PLAYER</b></h2>
+  <p>
+  <p>
+  The <a href=mobile.html>Mobile/html Players</a> can be found on the mobile page
+  <p>
 <div id="player" class="hdwhtml5player" style="height:360px; width:640px;"></div>
 <script>
 $j(document).ready(function(){
@@ -36,7 +42,6 @@ $j(document).ready(function(){
         height   : '768',
         type     : 'rtmp',
         streamer : 'rtmp://___TARGET___/live',
-        hls      : 'http://___TARGET___/hls/konf/index.m3u8',
         video    : 'konf',
         license  : '',
         logo     : '',
@@ -45,5 +50,6 @@ $j(document).ready(function(){
   })        
 });
 </script>
+</CENTER>
 </body>
 </html>
