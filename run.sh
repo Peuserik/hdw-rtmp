@@ -16,7 +16,7 @@ echo "$STATSUSER:$STATSPW" > /usr/local/nginx/conf/.htpasswd_stats
 TARGET="${TARGET:-localhost}"
 
 for p in /srv/www/*.html ; do
-  sed -i -e "s/___TARGET___/$TARGET/g" $i
+  sed -i -e "s/___TARGET___/$TARGET/g" $p
 done
 
 nginx

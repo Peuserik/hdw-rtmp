@@ -99,11 +99,10 @@ RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
 RUN mkdir -p /srv/www/	
-ADD nginx.conf /usr/local/nginx/conf/nginx.conf
-ADD hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
-ADD run.sh /srv/www/run.sh
+COPY nginx.conf /usr/local/nginx/conf/nginx.conf
+COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
+COPY ["run.sh", "index.html", "mobile.html", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
-ADD index.html /srv/www/
 ADD player /srv/www/player
 
 VOLUME ["/srv/www/","/usr/local/nginx/logs"]
@@ -117,7 +116,7 @@ CMD sh ./run.sh
 LABEL "maintainer"="peuserik@peuserik.de" \
       "org.label-schema.base-image.name"="ubuntu" \
       "org.label-schema.base-image.version"="16.04" \ 
-      "org.label-schema.description"="nginx with rtmp; hls and hdw" \
+      "org.label-schema.description"="nginx with rtmp serving hls, dash and hdw players" \
       "org.label-schema.vcs-url"="https://github.com/peuserik/hdw-rtmp" \
       "org.label-schema.schema-version"="1.0.0-rc.1" \
       "org.label-schema.vcs-ref"=$VCS_REF \
