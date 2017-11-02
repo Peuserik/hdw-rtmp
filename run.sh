@@ -14,7 +14,11 @@ echo "$STREAMUSER:$STREAMPW" > /usr/local/nginx/conf/.htpasswd_stream
 echo "$STATSUSER:$STATSPW" > /usr/local/nginx/conf/.htpasswd_stats
 
 TARGET="${TARGET:-localhost}"
+KEY="${KEY:-key}"
 
-sed -i -e "s/___TARGET___/$TARGET/g" /srv/www/index.html 
+for p in /srv/www/*.html ; do
+  sed -i -e "s/___TARGET___/$TARGET/g" $p
+  sed -i -e "s/___KEY___/$KEY/g" $p
+done
 
 nginx
