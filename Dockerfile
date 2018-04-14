@@ -51,7 +51,7 @@ RUN \
 	tar xfz nginx-${nginx_version}.tar.gz && \
 	rm -rf nginx-${nginx_version}.tar.gz && \
 	cd /tmp && \
-	git clone --verbose https://github.com/arut/nginx-rtmp-module.git && \
+	git clone --verbose https://github.com/sergey-dryabzhinsky/nginx-rtmp-module && \
   cp /tmp/nginx-rtmp-module/stat.xsl /tmp/ && \
   cd /tmp/nginx-${nginx_version} && \
   ./configure --add-module=../nginx-rtmp-module \
