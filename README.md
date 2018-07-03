@@ -126,7 +126,6 @@ STATSUSER=stats - set the user for the stats page.
 STATSPW=page - set the password for the stats page.
 
 TARGET=localhost - sets the target stream page for the hdw player configuration. Should point to your Server IP address or DNS Name
-(Optional) HTTPTARGET=$TARGET - set the target for the html5 players independent of the rtmp target. It's only necessary if if you have some abstraction between the exposing paths, like kubernetes. Normally you don't need to set this value
 KEY=key - set the stream key for your stream. This is only required if you want to use the build in players and change the default stream key you are streaming with.
 ```
 
@@ -171,10 +170,6 @@ $apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.
 To use it with the image just give it as env variable.
 ``` bash
 docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
-```
-
-``` bash
-docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -e HTTPTARGET='my-proxy-point.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
 ```
 
 ---
