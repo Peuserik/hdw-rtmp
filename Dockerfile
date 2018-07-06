@@ -83,7 +83,7 @@ RUN \
         wget \
         unzip \
   #       automake \
-        build-essential \
+        build-essential && \
   #       libpcre3-dev \
   #       autotools-dev \
   #       libssl-dev \
