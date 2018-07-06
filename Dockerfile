@@ -17,7 +17,7 @@ RUN \
 	apt-get clean && \
 	apt-get autoclean
 
-ENV nginx_version 1.12.2
+ENV nginx_version 1.15.1
 RUN groupadd nginx && useradd -m -g nginx nginx
 
 ARG BUILD_DATE
@@ -82,13 +82,13 @@ RUN \
   apt-get remove --purge -y \
         wget \
         unzip \
-        automake \
+  #       automake \
         build-essential \
-        libpcre3-dev \
-        autotools-dev \
-        libssl-dev \
-        autotools-dev \
-        zlib1g-dev && \
+  #       libpcre3-dev \
+  #       autotools-dev \
+  #       libssl-dev \
+  #       autotools-dev \
+  #       zlib1g-dev && \
   apt-get autoremove -y && \
   apt-get clean && \
   apt-get autoclean
