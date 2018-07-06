@@ -101,6 +101,7 @@ RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 RUN mkdir -p /srv/www/	
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
+COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
 COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "dynamic.html", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player

@@ -36,3 +36,11 @@ spec:
           name: http
         - containerPort: 443
           name: https
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
