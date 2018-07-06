@@ -4,18 +4,11 @@ metadata:
   labels:
     app: rtmp-tv
   name: rtmp-deployment
-  namespace: default
+  namespace: rtmp
 spec:
-  replicas: 1
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: rtmp-tv
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -31,9 +24,9 @@ spec:
         - name: KEY
           valueFrom:
             configMapKeyRef:
-              key: KEY 
+              key: KEY
               name: rtmp-tv-config
-        image: peuserik/hdw-rtmp
+        image: peuserik/hdw-rtmp:dev-dynamic
         imagePullPolicy: Always
         name: hdw-rtmp
         ports:
@@ -43,6 +36,3 @@ spec:
           name: http
         - containerPort: 443
           name: https
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-      restartPolicy: Always

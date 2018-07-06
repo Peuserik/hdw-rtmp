@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  KEY: kick
+  TARGET: tv.peuserik.de
+metadata:
+  labels:
+    app: rtmp-tv
+  name: rtmp-tv-config
+  namespace: rtmp
