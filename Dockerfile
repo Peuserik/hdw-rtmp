@@ -85,9 +85,9 @@ RUN \
         automake \
         build-essential \
   #       libpcre3-dev \
-        autotools-dev && \
+        autotools-dev \
   #       libssl-dev \
-  #       autotools-dev \
+        autotools-dev && \
   #       zlib1g-dev && \
   apt-get autoremove -y && \
   apt-get clean && \
