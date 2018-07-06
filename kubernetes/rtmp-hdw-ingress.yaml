@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: rtmp-tv
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: web-static-ip
+spec:
+  backend:
+    serviceName: rtmp-tv-service
+    servicePort: 80
+  
