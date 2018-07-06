@@ -16,6 +16,9 @@ spec:
   - name: https-port
     port: 443
     protocol: TCP
+  - name: healthz
+    port: 8080
+    protocol: TCP
   selector:
     app: rtmp-tv
   type: NodePort
