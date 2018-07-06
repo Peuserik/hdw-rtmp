@@ -82,10 +82,10 @@ RUN \
   apt-get remove --purge -y \
         wget \
         unzip \
-  #       automake \
-        build-essential && \
+        automake \
+        build-essential \
   #       libpcre3-dev \
-  #       autotools-dev \
+        autotools-dev && \
   #       libssl-dev \
   #       autotools-dev \
   #       zlib1g-dev && \
@@ -116,7 +116,7 @@ CMD sh ./run.sh
 
 LABEL "maintainer"="peuserik@peuserik.de" \
       "org.label-schema.base-image.name"="ubuntu" \
-      "org.label-schema.base-image.version"="16.04" \ 
+      "org.label-schema.base-image.version"="18.04" \ 
       "org.label-schema.description"="nginx with rtmp serving hls, dash and hdw players" \
       "org.label-schema.vcs-url"="https://github.com/peuserik/hdw-rtmp" \
       "org.label-schema.schema-version"="1.0.0-rc.1" \
