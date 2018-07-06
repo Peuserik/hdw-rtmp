@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 # Surpress Upstart errors/warning
 RUN dpkg-divert --local --rename --add /sbin/initctl
@@ -101,9 +101,10 @@ RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 RUN mkdir -p /srv/www/	
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
-COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "/srv/www/" ]
+COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "dynamic.html", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
+ADD images /srv/www/images
 
 VOLUME ["/srv/www/","/usr/local/nginx/logs"]
 

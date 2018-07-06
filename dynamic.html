@@ -4,84 +4,95 @@
 <title>Dash Player</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!-- dash player -->
 <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
 
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
 
 </head>
 <body>
-  <div class="input-group" style="margin-top: 10px; width: 740px;">
-    <input type="text" name="stream_app" id="stream_app" value="___KEY___" required autofocus placeholder="" class="form-control">
-        <span class="input-group-btn input-btn">
-      <button class="btn btn-default" id="form_button" type="button" onclick="startVideo()">Activate Stream</button>
-   </span>
-  </div>
-
   <script type="text/javascript">
 
     var player1, firstLoad = true;
-    var key = 'konf';
-    var tech = '';
-    var file, location, video;
+    var defaultkey = '___KEY___';
+    var tech = 'dash';
+    var file = "index.mpd", path, video;
+        
+    function startStream() {
     
-    function showPlayer() {
-        var x = document.getElementById("player");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        }
-    }
-    
-    function startVideo() {
-    
-      showPlayer();
-    
-      if (!firstLoad)
-        {
-          player1.reset();
-        }
       firstLoad = false;
-    
-      tech = "dash";
-      file = "index.mpd";
-      
-      //var url='___TARGET___/'
+
       var inputkey = document.getElementById("stream_app").value;
     
       if (inputkey != "")
       {
         key = inputkey;
+      } else {
+        key = defaultkey;
       }
     
-      location = tech + "/" + key + "/" + file;
+      path = tech + "/" + key + "/" + file;
     
       video = document.querySelector("#dash-video-player");
     
       player1 = dashjs.MediaPlayer().create();
-      player1.initialize(video, end ,false);
+      player1.initialize(video, path ,false);
     
-      console.log(end);
-    } 
+      console.log(path);
+    }
+
+    function switchStream() {
+      if (!firstLoad)
+        {
+          player1.reset();
+        }
+      firstLoad = false;
+
+      var inputkey = document.getElementById("stream_app").value;
+      if (inputkey != "")
+      {
+        key = inputkey;
+      } else {
+        key = defaultkey;
+      }
+    
+      path = tech + "/" + key + "/" + file;
+    
+      video = document.querySelector("#dash-video-player");
+    
+      player1 = dashjs.MediaPlayer().create();
+      player1.initialize(video, path ,false);
+    
+      console.log(path);
+    }
   </script>
 
   <CENTER>
-    <h2><b>Dyanmic Player</b></h2>
+    <h2><b>Dynamic Dash Player</b></h2>
     <p>
-    The <a href=index.html>HDW Player</a> can be found on the index page
-    The <a href=iphone.html>iphone html Player</a> can be found on the Iphone page
+    The <a href=index.html>HDW player</a> can be found on the index page
+    The <a href=iphone.html>iPhone html player</a> can be found on the iPhone page
     <p>
-    <h3>DASH PLAYER</h3>
     <div id="player">
-    <video id="dash-video-player" controls>
+    <video id="dash-video-player" controls autoplay poster="/images/Metronom.jpg >
     </video>
     </div>
   </CENTER>
-<script type="text/javascript">
-document.getElementById("player").style.display="none";
-</script>
+  <script type="text/javascript">
+    //document.getElementById("player").style.display="none";
+    document.addEventListener("DOMContentLoaded", function () {
+      startStream();
+    });
+  </script>
+  <div class="input-group" style="margin-top: 10px; margin-left: 10px; width: 240px;">
+    <input type="text" name="stream_app" id="stream_app" required placeholder="Stream Name" class="form-control">
+        <span class="input-group-btn input-btn">
+      <button class="btn btn-default" id="form_button" type="button" onclick="switchStream()">Switch Stream</button>
+   </span>
+  </div>
 
 </body>
 </html>
