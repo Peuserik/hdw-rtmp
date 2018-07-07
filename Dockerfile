@@ -102,7 +102,7 @@ RUN mkdir -p /srv/www/
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
-COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "dynamic.html", "/srv/www/" ]
+COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "dynamic.html", "hdw.html", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
@@ -111,7 +111,7 @@ VOLUME ["/srv/www/","/usr/local/nginx/logs"]
 
 WORKDIR /srv/www
 				
-EXPOSE 1935 80 443
+EXPOSE 1935 80 8080 443
 
 CMD sh ./run.sh
 

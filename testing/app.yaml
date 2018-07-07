@@ -1,18 +1,18 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: rtmp-tv-ing-ip
-  namespace: rtmp
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: rtmp-input2
+    kubernetes.io/ingress.global-static-ip-name: web-static-ip2
   labels:
     app: rtmp-tv
+  name: rtmp-tv-ing-app
+  namespace: rtmp
 spec:
   rules:
-  - host: tv.peuserik.de
+  - host: rtmp.peuserik.de
     http:
       paths:
-      - path: /*
-        backend:
+      - backend:
           serviceName: rtmp-tv-service
           servicePort: 80
+        path: /*
