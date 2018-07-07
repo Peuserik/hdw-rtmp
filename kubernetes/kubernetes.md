@@ -6,6 +6,11 @@ I also added an stateful scaling example together with an internal nfs server to
 Please be aware that this is not for production in any kind. IF you look for a real scaling and more secure solution please take a look at push and pull [directives](https://github.com/arut/nginx-rtmp-module/wiki/Directives) from the rtmp module.
 
 ---
+## Create secret
+
+We need the fullchain, the private key and dhparams in pem format. store them in a directory called tls and create a secret out of it
+
+`kubectl create secret generic --namespace rtmp tls-certs --from-file=tls/`
 
 ## Simple deploy
 

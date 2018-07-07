@@ -107,7 +107,7 @@ RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
 
-VOLUME ["/srv/www/","/usr/local/nginx/logs"]
+VOLUME ["/srv/www/","/usr/local/nginx/logs", "/usr/local/nginx/conf/ssl"]
 
 WORKDIR /srv/www
 				

@@ -65,14 +65,11 @@
         key = defaultkey;
       }
     
-      path = tech + "/" + key + "/" + file;
-    
+      path = tech + "/" + key + "/" + file;    
       video = document.querySelector("#dash-video-player");
     
       player1 = dashjs.MediaPlayer().create();
       player1.initialize(video, path ,false);
-    
-      console.log(path);
     }
   </script>
 
@@ -83,7 +80,7 @@
     The <a href=iphone.html>iPhone hls player</a> can be found on the iPhone page
     <p>
     <div id="player">
-    <video id="dash-video-player" controls poster="/images/Metronom.gif" >
+    <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif" >
     </video>
     </div>
   </CENTER>
