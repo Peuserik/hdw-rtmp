@@ -10,4 +10,4 @@ data:
   KEY: kick
   TARGET: tv.peuserik.de
   STREAMUSER: 'live'
-  STREAMPW: 'stream'
+  STREAMPW: '$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.'
