@@ -11,6 +11,7 @@ hdw player on the main page - free flash player with rtmp capabilities.
 html5 video tag for DASH player on "mobile" page and for a HLS player for Apple or HLS compatible devices/software
 Simple basic auth for protecting the content.
 But only in Source Output right now.
+Kubernertes instructions can be found in the kubernetes folder
 
 ---
 
@@ -25,15 +26,17 @@ But only in Source Output right now.
   - [Create new passwords](#create-new-passwords)
     - [Ubuntu](#ubuntu)
     - [CentOS/ToDO](#todo)
+- [**Kubernertes**](kubernetes/kubernetes.md)
 
 ---
 
 ## Versions
 
-* nginx version: 1.12.2
-* [rtmp-module for nginx](https://github.com/arut/nginx-rtmp-module "arut/nginx-rtmp-module"): master branch
-* Ubuntu: 16.04
+* nginx version: 1.15.1
+* [rtmp-module for nginx](https://github.com/sergey-dryabzhinsky/nginx-rtmp-module "sergey-dryabzhinsky/nginx-rtmp-module"): master branch
+* Ubuntu: 18.04
 * [hdw player free](https://www.hdwplayer.com/): 3.0
+* [dash player](https://github.com/Dash-Industry-Forum/dash.js): latest
 
 ---
 
@@ -170,62 +173,6 @@ $apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.
 To use it with the image just give it as env variable.
 ``` bash
 docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
-```
-
----
-
-## Kubernetes
-
-This image can be deployed in kubernetes. You need a config map with environment variables you want to set. for possible variables take a look at [**Default Parameter**](#default-parameter).
-
-### Configmap
-
-``` yaml
-
-```
-
-### Deployment
-
-``` yaml
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    app: rtmp-tv
-  name: rtmp-deployment
-  namespace: rtmp
-spec:
-  selector:
-    matchLabels:
-      app: rtmp-tv
-  template:
-      labels:
-        app: rtmp-tv
-    spec:
-      containers:
-      - env:
-        - name: TARGET
-          valueFrom:
-            configMapKeyRef:
-              key: TARGET
-              name: rtmp-tv-config
-        - name: KEY
-          valueFrom:
-            configMapKeyRef:
-              key: KEY
-              name: rtmp-tv-config
-        image: peuserik/hdw-rtmp
-        imagePullPolicy: Always
-        name: hdw-rtmp
-        ports:
-        - containerPort: 1935
-          name: rtmp
-        - containerport: 80
-          name: http
-        - containerport: 443
-          name: https
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
 ```
 
 ---
