@@ -5,7 +5,7 @@ metadata:
   labels:
     app: rtmp-tv
   name: rtmp-tv-config
-  namespace: default
+  namespace: rtmp
 data:
   KEY: kick
   TARGET: tv.example.com # Not needed for dynamic kubernetes

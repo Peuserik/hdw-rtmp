@@ -10,7 +10,7 @@ spec:
   accessModes: [ "ReadWriteOnce" ]
   resources:
     requests:
-      storage: 10Gi
+      storage: 10Gi # get storage from google
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

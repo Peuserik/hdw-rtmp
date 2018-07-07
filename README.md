@@ -118,6 +118,11 @@ With the default configuration you can test the streaming part with for example 
 
 *The dafault passwords are shared in the authentification part*
 
+#### Test playing the stream with the dash player
+* go in your browser to `http://localhost/dynamic.html`
+* supply the user and password for the basic auth
+* press play; the video takes a few seconds to start.
+
 ---
 
 ## Default Parameter
