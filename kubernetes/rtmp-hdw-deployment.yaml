@@ -3,10 +3,9 @@ kind: Deployment
 metadata:
   labels:
     app: rtmp-tv
-  name: rtmp-deployment
-  namespace: default
+  name: rtmp-tv-deployment
+  namespace: rtmp
 spec:
-  progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
@@ -18,6 +17,7 @@ spec:
       maxUnavailable: 1
     type: RollingUpdate
   template:
+    metadata:
       labels:
         app: rtmp-tv
     spec:
@@ -31,7 +31,7 @@ spec:
         - name: KEY
           valueFrom:
             configMapKeyRef:
-              key: KEY 
+              key: KEY
               name: rtmp-tv-config
         image: peuserik/hdw-rtmp
         imagePullPolicy: Always
@@ -39,15 +39,20 @@ spec:
         ports:
         - containerPort: 1935
           name: rtmp
-        - containerport: 80
+        - containerPort: 80
           name: http
-        - containerport: 443
+        - containerPort: 443
           name: https
-        resources: {}
+        - containerPort: 8080
+          name: health
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-      dnsPolicy: ClusterFirst
       restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30

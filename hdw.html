@@ -1,0 +1,60 @@
+<!=OCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Peuses Stream Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script type="text/javascript" src="player/js/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="player/js/majhdwplayer.js?xxx"></script>
+<script type="text/javascript" src="player/js/html5.hdwplayer.js"></script>
+<link rel="stylesheet" href="player/css/html5.hdwstyles.css" type="text/css" media="all">
+<style>
+@media only screen  and (min-width: 100px) and (max-width: 680px){
+  #player{
+  width: 100% !important;
+  height: 230px !important;
+  }
+}
+
+@media only screen  and (min-width: 768px) and (max-width: 979px){
+  #player{
+  width: 100% !important;
+  height: 320px !important;
+  }
+}
+
+body {
+  background-color: #687174;
+}
+
+</style>
+</head>
+<body>
+  <CENTER>
+  <h2><b>HDW PLAYER</b></h2>
+  <p>
+  <p>
+  The <a href=mobile.html>DASH Mobile/html Player</a> can be found on the mobile page
+  The <a href=iphone.html>iphone html Player</a> can be found on the Iphone page
+  <p>
+<div id="player" class="hdwhtml5player" style="height:360px; width:640px;"></div>
+<script>
+$j(document).ready(function(){
+  hdwplayer({ 
+        id       : 'player',
+        swf      : 'player/player.swf?api=true',
+        width    : '1360',
+        height   : '768',
+        type     : 'rtmp',
+        streamer : 'rtmp://___TARGET___/live',
+        video    : '___KEY___',
+        license  : '',
+        logo     : '',
+        autoStart: 'false',
+        api      : true
+  })        
+});
+</script>
+</CENTER>
+</body>
+</html>

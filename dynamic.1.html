@@ -4,8 +4,8 @@
 <title>Dash Player</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<!-- dash player -->
-<script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+<!-- hls player -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
@@ -23,8 +23,8 @@
 
     var player1, firstLoad = true;
     var defaultkey = '___KEY___';
-    var tech = 'dash';
-    var file = "index.mpd", path, video;
+    var tech = 'hls';
+    var file = "index.m3u8", path, video;
         
     function startStream() {
     
@@ -78,11 +78,11 @@
   <CENTER>
     <h2><b>Dynamic Dash Player</b></h2>
     <p>
-    The <a href=hdw.html>HDW player</a> can be found on the hdw page
-    The <a href=iphone.html>iPhone hls player</a> can be found on the iPhone page
+    The <a href=index.html>HDW player</a> can be found on the index page
+    The <a href=iphone.html>iPhone html player</a> can be found on the iPhone page
     <p>
     <div id="player">
-    <video id="dash-video-player" controls poster="/images/Metronom.gif" >
+    <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif" >
     </video>
     </div>
   </CENTER>

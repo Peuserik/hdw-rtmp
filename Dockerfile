@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 # Surpress Upstart errors/warning
 RUN dpkg-divert --local --rename --add /sbin/initctl
@@ -17,7 +17,7 @@ RUN \
 	apt-get clean && \
 	apt-get autoclean
 
-ENV nginx_version 1.12.2
+ENV nginx_version 1.15.1
 RUN groupadd nginx && useradd -m -g nginx nginx
 
 ARG BUILD_DATE
@@ -84,11 +84,11 @@ RUN \
         unzip \
         automake \
         build-essential \
-        libpcre3-dev \
+  #       libpcre3-dev \
         autotools-dev \
-        libssl-dev \
-        autotools-dev \
-        zlib1g-dev && \
+  #       libssl-dev \
+        autotools-dev && \
+  #       zlib1g-dev && \
   apt-get autoremove -y && \
   apt-get clean && \
   apt-get autoclean
@@ -101,21 +101,23 @@ RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 RUN mkdir -p /srv/www/	
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
-COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "/srv/www/" ]
+COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
+COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "dynamic.html", "hdw.html", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
+ADD images /srv/www/images
 
 VOLUME ["/srv/www/","/usr/local/nginx/logs"]
 
 WORKDIR /srv/www
 				
-EXPOSE 1935 80 443
+EXPOSE 1935 80 8080 443
 
 CMD sh ./run.sh
 
 LABEL "maintainer"="peuserik@peuserik.de" \
       "org.label-schema.base-image.name"="ubuntu" \
-      "org.label-schema.base-image.version"="16.04" \ 
+      "org.label-schema.base-image.version"="18.04" \ 
       "org.label-schema.description"="nginx with rtmp serving hls, dash and hdw players" \
       "org.label-schema.vcs-url"="https://github.com/peuserik/hdw-rtmp" \
       "org.label-schema.schema-version"="1.0.0-rc.1" \

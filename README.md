@@ -174,6 +174,62 @@ docker run -d --name rtmp -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$Kaa
 
 ---
 
+## Kubernetes
+
+This image can be deployed in kubernetes. You need a config map with environment variables you want to set. for possible variables take a look at [**Default Parameter**](#default-parameter).
+
+### Configmap
+
+``` yaml
+
+```
+
+### Deployment
+
+``` yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: rtmp-tv
+  name: rtmp-deployment
+  namespace: rtmp
+spec:
+  selector:
+    matchLabels:
+      app: rtmp-tv
+  template:
+      labels:
+        app: rtmp-tv
+    spec:
+      containers:
+      - env:
+        - name: TARGET
+          valueFrom:
+            configMapKeyRef:
+              key: TARGET
+              name: rtmp-tv-config
+        - name: KEY
+          valueFrom:
+            configMapKeyRef:
+              key: KEY
+              name: rtmp-tv-config
+        image: peuserik/hdw-rtmp
+        imagePullPolicy: Always
+        name: hdw-rtmp
+        ports:
+        - containerPort: 1935
+          name: rtmp
+        - containerport: 80
+          name: http
+        - containerport: 443
+          name: https
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+```
+
+---
+
 # ToDo
 
 To lazy to continue right now.
