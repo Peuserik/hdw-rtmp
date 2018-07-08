@@ -10,7 +10,7 @@ Please be aware that this is not for production in any kind. IF you look for a r
 
 We need the fullchain, the private key and dhparams in pem format. store them in a directory called tls and create a secret out of it
 
-`kubectl create secret generic --namespace rtmp tls-certs --from-file=tls/`
+`kubectl create secret generic --namespace rtmp domain.secrets --from-file=tls/`
 
 ## Simple deploy
 
