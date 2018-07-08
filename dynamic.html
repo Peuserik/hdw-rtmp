@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <!-- dash player -->
-<script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+<script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
 
-<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
 </head>
 <style>
@@ -64,14 +65,11 @@
         key = defaultkey;
       }
     
-      path = tech + "/" + key + "/" + file;
-    
+      path = tech + "/" + key + "/" + file;    
       video = document.querySelector("#dash-video-player");
     
       player1 = dashjs.MediaPlayer().create();
       player1.initialize(video, path ,false);
-    
-      console.log(path);
     }
   </script>
 
@@ -82,7 +80,7 @@
     The <a href=iphone.html>iPhone hls player</a> can be found on the iPhone page
     <p>
     <div id="player">
-    <video id="dash-video-player" controls poster="/images/Metronom.gif" >
+    <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif" >
     </video>
     </div>
   </CENTER>

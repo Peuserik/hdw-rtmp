@@ -69,6 +69,13 @@ spec:
             port: 8080
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+          - name: ssl
+            mountPath: "/usr/local/nginx/conf/ssl"
+      volumes:
+      - name: ssl
+        secret:
+          secretName: domain.secrets
       restartPolicy: Always
 ---
 apiVersion: v1

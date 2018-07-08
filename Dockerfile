@@ -98,7 +98,7 @@ RUN \
 RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
-RUN mkdir -p /srv/www/	
+RUN mkdir -p /srv/www/streams	
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
@@ -107,7 +107,7 @@ RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
 
-VOLUME ["/srv/www/","/usr/local/nginx/logs"]
+VOLUME ["/srv/www/","/usr/local/nginx/logs", "/usr/local/nginx/conf/ssl"]
 
 WORKDIR /srv/www
 				
