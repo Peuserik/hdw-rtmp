@@ -1,8 +1,10 @@
 [![](http://dockerbuildbadges.quelltext.eu/status.svg?organization=peuserik&repository=hdw-rtmp)](https://hub.docker.com/r/peuserik/hdw-rtmp/builds/) [![](https://images.microbadger.com/badges/image/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp) [![](https://images.microbadger.com/badges/version/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp) [![](https://images.microbadger.com/badges/commit/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp)
 
-# Switched to TLS only
-
+# NGINX RTMP 
+with hdw, dash and hls player.
 I'm using basic auth for simple security. Without certificates with the right name the container will not start.
+
+## **Switched to tls only**
 
 # What is this about
 
