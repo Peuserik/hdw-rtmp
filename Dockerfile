@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:18.04 as builder
 
 # Surpress Upstart errors/warning
 RUN dpkg-divert --local --rename --add /sbin/initctl && ln -sf /bin/true /sbin/initctl
@@ -27,7 +27,7 @@ RUN \
 	apt-get update && \
 	apt-get install --no-install-recommends -y git \
 	wget \
-  ca-certificates \
+      ca-certificates \
 	unzip \
 	automake \
 	git \
@@ -42,10 +42,8 @@ RUN \
 	cd /tmp && \
 	wget -nd http://nginx.org/download/nginx-${nginx_version}.tar.gz && \
 	tar xfz nginx-${nginx_version}.tar.gz && \
-	rm -rf nginx-${nginx_version}.tar.gz && \
 	cd /tmp && \
 	git clone --verbose https://github.com/sergey-dryabzhinsky/nginx-rtmp-module && \
-  cp /tmp/nginx-rtmp-module/stat.xsl /tmp/ && \
   cd /tmp/nginx-${nginx_version} && \
   ./configure --add-module=../nginx-rtmp-module \
         --with-http_ssl_module \
@@ -66,10 +64,10 @@ RUN \
         --with-ipv6 \
         --user=nginx \
         --group=nginx \
-        --prefix=/usr/local/nginx \
-        --sbin-path=/usr/sbin && \
+        --prefix=/usr/local/nginx && \
   cd /tmp/nginx-${nginx_version} && \
   make && \
+<<<<<<< HEAD
   make install && \
   rm -rf /tmp/nginx-${nginx_version} && \
   rm -rf /var/lib/apt/lists/* && \
@@ -86,13 +84,34 @@ RUN \
   apt-get autoremove -y && \
   apt-get clean && \
   apt-get autoclean
+=======
+  make install
+
+>>>>>>> dev-dockerfile
 # https://github.com/sergey-dryabzhinsky/nginx-rtmp-module
 # https://github.com/arut/nginx-rtmp-module.git
+
+FROM ubuntu:18.04
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
+
+COPY --from=0 /tmp/nginx-rtmp-module/stat.xsl /tmp/stat.xsl
+COPY --from=0 /usr/local/nginx /usr/local/nginx
 
 RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
-RUN mkdir -p /srv/www/streams	
+RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams	&& \
+      apt-get update  && \
+	apt-get install --no-install-recommends -y \
+      libssl-dev \
+      libxml2 \
+      libxslt1.1 && \
+      rm -rf /var/lib/apt/lists/*
+
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
