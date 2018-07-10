@@ -85,7 +85,14 @@ COPY --from=0 /usr/local/nginx /usr/local/nginx
 RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
-RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams	
+RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams	&& \
+      apt-get update  && \
+	apt-get install --no-install-recommends -y \
+      libssl-dev \
+      libxml2 \
+      libxslt1.1 && \
+      rm -rf /var/lib/apt/lists/*
+
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
