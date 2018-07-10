@@ -22,4 +22,4 @@ for p in /srv/www/*.html ; do
 done
 
 echo "Starting server..."
-/usr/local/sbin/nginx
+/usr/local/nginx/sbin/nginx
