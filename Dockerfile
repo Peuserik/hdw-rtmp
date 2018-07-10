@@ -74,6 +74,11 @@ RUN \
 
 FROM ubuntu:18.04
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
+
 COPY --from=0 /tmp/nginx-rtmp-module/stat.xsl /tmp/stat.xsl
 COPY --from=0 /usr/local/nginx /usr/local/nginx
 
