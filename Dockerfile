@@ -67,27 +67,8 @@ RUN \
         --prefix=/usr/local/nginx && \
   cd /tmp/nginx-${nginx_version} && \
   make && \
-<<<<<<< HEAD
-  make install && \
-  rm -rf /tmp/nginx-${nginx_version} && \
-  rm -rf /var/lib/apt/lists/* && \
-  apt-get remove --purge -y \
-        wget \
-        unzip \
-        automake \
-        build-essential \
-  #       libpcre3-dev \
-        autotools-dev \
-  #       libssl-dev \
-        autotools-dev && \
-  #       zlib1g-dev && \
-  apt-get autoremove -y && \
-  apt-get clean && \
-  apt-get autoclean
-=======
   make install
 
->>>>>>> dev-dockerfile
 # https://github.com/sergey-dryabzhinsky/nginx-rtmp-module
 # https://github.com/arut/nginx-rtmp-module.git
 
