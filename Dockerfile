@@ -72,6 +72,7 @@ RUN \
   make && \
   make install && \
   rm -rf /tmp/nginx-${nginx_version} && \
+  rm -rf /tmp/nginx-rtmp-* && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get remove --purge -y \
         wget \
