@@ -21,4 +21,5 @@ for p in /srv/www/*.html ; do
   sed -i -e "s/___KEY___/$KEY/g" $p 
 done
 
-nginx
+echo "Starting server..."
+/usr/local/nginx/sbin/nginx
