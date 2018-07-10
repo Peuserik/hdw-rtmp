@@ -1,7 +1,8 @@
 FROM ubuntu:18.04
 
 # Surpress Upstart errors/warning
-RUN dpkg-divert --local --rename --add /sbin/initctl && ln -sf /bin/true /sbin/initctl
+RUN dpkg-divert --local --rename --add /sbin/initctl
+RUN ln -sf /bin/true /sbin/initctl
 
 # Let the conatiner know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
@@ -9,8 +10,15 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update base image
 # Add sources for latest nginx
 # Install software requirements
+RUN \ 
+  apt-get update && \
+	apt-get upgrade -y && \
+	apt-get autoremove -y && \
+	apt-get clean && \
+	apt-get autoclean
 
 ENV nginx_version 1.15.1
+RUN groupadd nginx && useradd -m -g nginx nginx
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -23,9 +31,8 @@ ARG VERSION
 #        apt-get -y install ffmpeg
 
 RUN \
-  groupadd nginx && useradd -m -g nginx nginx && \
 	apt-get update && \
-	apt-get install --no-install-recommends -y git \
+	apt-get install -y git \
 	wget \
   ca-certificates \
 	unzip \
@@ -72,7 +79,6 @@ RUN \
   make && \
   make install && \
   rm -rf /tmp/nginx-${nginx_version} && \
-  rm -rf /var/lib/apt/lists/* && \
   apt-get remove --purge -y \
         wget \
         unzip \
