@@ -96,7 +96,7 @@ RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams	&&
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
-COPY ["run.sh", "index.html", "mobile.html", "iphone.html", "dynamic.html", "hdw.html", "/srv/www/" ]
+COPY ["run.sh", "index.html", "hls.html", "dynamic.html", "hdw.html", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
