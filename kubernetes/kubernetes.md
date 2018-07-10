@@ -225,4 +225,4 @@ If you want longer playlist or have problems with stucking(lagging consider sett
 
 ### probs
 
-because of the shared filesystem and the activated cleanup you will see errors from pods, that tried to cleanup the last dash or hls fragments but were to slow.
+Cause if the shared filesystem and the activated cleanup you will see errors from pods that tried to cleanup the last fragments but were to slow.

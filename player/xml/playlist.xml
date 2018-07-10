@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<playlist>
+<media>
+<id>2</id>
+<type>youtube</type>
+<!-- <video>https://www.youtube.com/watch?v=7CAAM_x-zJE</video> -->
+<video>https://www.youtube.com/watch?v=UIWPC7TUuQc</video>
+<streamer></streamer>
+<thumb>http://img.youtube.com/vi/7CAAM_x-zJE/default.jpg</thumb>
+<preview>http://img.youtube.com/vi/7CAAM_x-zJE/0.jpg</preview>
+<title>Youtube Testing 2</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>1</id>
+<type>video</type>
+<video>http://localhost/videos/crazy.mp4</video>
+<streamer></streamer>
+<thumb>http://localhost/images/Tulips.jpg</thumb>
+<preview>http://localhost/images/Tulips.jpg</preview>
+<title>Sample Video</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>10</id>
+<type>youtube</type>
+<video>https://www.youtube.com/watch?v=6pxRHBw-k8M</video>
+<streamer></streamer>
+<thumb>http://img.youtube.com/vi/3IJeN5qZ7Vo/default.jpg</thumb>
+<preview>http://img.youtube.com/vi/3IJeN5qZ7Vo/0.jpg</preview>
+<title>Youtube Testing</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>10</id>
+<type>youtube</type>
+<video>https://www.youtube.com/watch?v=QAZjZakc83M</video>
+<streamer></streamer>
+<thumb>http://img.youtube.com/vi/QAZjZakc83M/default.jpg</thumb>
+<preview>http://img.youtube.com/vi/QAZjZakc83M/0.jpg</preview>
+<title>Youtube Testing</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>5</id>
+<type>vimeo</type>
+<video>https://vimeo.com/172825105</video>
+<streamer></streamer>
+<thumb>https://i.vimeocdn.com/video/578791142_640.webp</thumb>
+<preview>https://i.vimeocdn.com/video/578791142_640.webp</preview>
+<title>Vimeo</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>4</id>
+<type>rtmp</type>
+<video>BigBuckBunny_115k.mov</video>
+<streamer>rtmp://184.72.239.149/vod/</streamer>
+<thumb>http://localhost/images/thumb1.png</thumb>
+<rtsp>rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov</rtsp>
+<hls>http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8</hls>
+<preview>http://localhost/images/thumb1.png</preview>
+<title>RTMP Video</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>3</id>
+<type>dailymotion</type>
+<video>http://www.dailymotion.com/video/x52vdjj_artist-uses-thousands-of-nails-to-create-3d-art-making-mad_news</video>
+<streamer></streamer>
+<thumb>http://s1.dmcdn.net/eoZxR/160x120-s_7.jpg</thumb>
+<preview>http://s1.dmcdn.net/eoZxR.jpg</preview>
+<title>Dailymotion</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>2</id>
+<type>youtube</type>
+<video>https://www.youtube.com/watch?v=v9oxyswY8fs</video>
+<streamer></streamer>
+<thumb>http://img.youtube.com/vi/v9oxyswY8fs/default.jpg</thumb>
+<preview>http://img.youtube.com/vi/v9oxyswY8fs/0.jpg</preview>
+<title>Youtube Testing</title>
+<description><![CDATA[]]></description>
+</media>
+<media>
+<id>10</id>
+<type>youtube</type>
+<video>https://www.youtube.com/watch?v=R18q2p8pqp8</video>
+<streamer></streamer>
+<thumb>http://img.youtube.com/vi/R18q2p8pqp8/default.jpg</thumb>
+<preview>http://img.youtube.com/vi/R18q2p8pqp8/0.jpg</preview>
+<title>Youtube Testing</title>
+<description><![CDATA[]]></description>
+</media>
+</playlist>
