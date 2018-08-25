@@ -18,6 +18,10 @@
   body {
     background-color: #687174;
   }
+  .volume_right {
+    position: relative;
+    float: right;
+  }
 </style>
 <body>
   <script type="text/javascript">
@@ -43,9 +47,16 @@
       path = tech + "/" + key + "/" + file;
     
       video = document.querySelector("#dash-video-player");
+      document.querySelector('#gainSlider').addEventListener('change', function() {
+              player1.setVolume(this.value)
+              console.log(player1.getVolume())
+
+            }, false);
     
       player1 = dashjs.MediaPlayer().create();
-      player1.initialize(video, path ,false);
+      player1.initialize(video, path ,true);
+      player1.setVolume(0.5);
+      
     
       console.log(path);
     }
@@ -77,11 +88,14 @@
     <h2><b>Dynamic Dash Player</b></h2>
     <p>
     The <a href=hdw.html>HDW player</a> can be found on the hdw page
-    The <a href=hls.html>iPhone hls player</a> can be found on the iPhone page
+    The <a href=ihls.html>iPhone hls player</a> can be found on the iPhone page
     <p>
     <div id="player">
-    <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif" >
-    </video>
+      <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif" >
+      </video>
+      <span class="volume_right">
+        <input id="gainSlider" type="range" min="0" max="1" step="0.05" />
+      </span>
     </div>
   </CENTER>
   <script type="text/javascript">
