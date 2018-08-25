@@ -1,115 +1,118 @@
 <!=OCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
 <head>
-<title>Dash Player</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<!-- dash player -->
-<script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+  <title>Dash Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <!-- dash player -->
+  <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
 </head>
 <style>
   body {
     background-color: #687174;
   }
+
   .volume_right {
     position: relative;
     float: right;
   }
 </style>
+
 <body>
   <script type="text/javascript">
-
     var player1, firstLoad = true;
     var defaultkey = '___KEY___';
     var tech = 'dash';
-    var file = "index.mpd", path, video;
-        
-    function startStream() {
-    
-      firstLoad = false;
+    var file = "index.mpd",
+      path, video;
 
+    function startStream() {
+      firstLoad = false;
       var inputkey = document.getElementById("stream_app").value;
-    
-      if (inputkey != "")
-      {
+      if (inputkey != "") {
         key = inputkey;
       } else {
         key = defaultkey;
       }
-    
       path = tech + "/" + key + "/" + file;
-    
       video = document.querySelector("#dash-video-player");
       document.querySelector('#gainSlider').addEventListener('change', function() {
-              player1.setVolume(this.value)
-              console.log(player1.getVolume())
-
-            }, false);
-    
+        player1.setVolume(this.value)
+        document.getElementById("volume_label").innerHTML = player1.getVolume();
+        console.log(player1.getVolume())
+      }, false);
       player1 = dashjs.MediaPlayer().create();
-      player1.initialize(video, path ,true);
+      player1.initialize(video, path, true);
       player1.setVolume(0.5);
-      
-    
       console.log(path);
     }
 
     function switchStream() {
-      if (!firstLoad)
-        {
-          player1.reset();
-        }
+      if (!firstLoad) {
+        player1.reset();
+      }
       firstLoad = false;
-
       var inputkey = document.getElementById("stream_app").value;
-      if (inputkey != "")
-      {
+      if (inputkey != "") {
         key = inputkey;
       } else {
         key = defaultkey;
       }
-    
-      path = tech + "/" + key + "/" + file;    
+      path = tech + "/" + key + "/" + file;
       video = document.querySelector("#dash-video-player");
-    
       player1 = dashjs.MediaPlayer().create();
-      player1.initialize(video, path ,false);
+      player1.initialize(video, path, false);
     }
   </script>
 
   <CENTER>
     <h2><b>Dynamic Dash Player</b></h2>
-    <p>
-    The <a href=hdw.html>HDW player</a> can be found on the hdw page
-    The <a href=ihls.html>iPhone hls player</a> can be found on the iPhone page
-    <p>
-    <div id="player">
-      <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif" >
+    <p></p>
+      The <a href=hdw.html>HDW player</a> can be found on the hdw page The <a href=ihls.html>iPhone hls player</a> can be found on the iPhone page
+    <p></p>
+      <div id="player" class="video_container">
+        <video id="dash-video-player" controls autoplay poster="/images/Metronom.gif">
       </video>
       <span class="volume_right">
-        <input id="gainSlider" type="range" min="0" max="1" step="0.05" />
+        <input id="gainSlider" type="range" list="tickmarks" min="0" max="1" step="any" />
+        <datalist id="tickmarks">
+          <option value="0" label="0%">
+          <option value="0.1">
+          <option value="0.2">
+          <option value="0.3">
+          <option value="0.4">
+          <option value="0.5" label="50%">
+          <option value="0.6">
+          <option value="0.7">
+          <option value="0.8">
+          <option value="0.9">
+          <option value="1" label="100%">
+        </datalist>
+        <b>Volume: <label id="volume_label" style="width: 50px;" >0.5</label></b>
       </span>
-    </div>
+      </div>
   </CENTER>
   <script type="text/javascript">
     //document.getElementById("player").style.display="none";
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
       startStream();
     });
   </script>
   <div class="input-group" style="margin-top: 10px; margin-left: 10px; width: 240px;">
     <input type="text" name="stream_app" id="stream_app" required placeholder="Stream Name" class="form-control">
-        <span class="input-group-btn input-btn">
+    <span class="input-group-btn input-btn">
       <button class="btn btn-default" id="form_button" type="button" onclick="switchStream()">Switch Stream</button>
    </span>
   </div>
 
 </body>
+
 </html>
