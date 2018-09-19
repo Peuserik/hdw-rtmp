@@ -97,7 +97,6 @@ COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
 COPY ["run.sh", "index.html", "ihls.html", "dynamic.html", "hdw.html", "/srv/www/" ]
-COPY ["mute30.png", "unmute30.png", "ihls.html", "play-button30.png", "pause-button30.png", "/srv/www/" ]
 RUN chmod +x /srv/www/run.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
