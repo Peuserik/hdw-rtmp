@@ -25,15 +25,24 @@
 
     div#player {
         width: 80%;
+        min-width: 750px;
         background: #000;
         margin: 0px auto;
+        object-fit: cover;
+    }
+
+    #dash-video-player {
+        width: 100%;
+        height: auto;
+        background: url(/images/Metronom.gif) no-repeat center center;
     }
 
     div#video_controls_bar {
         background: #333333;
-        padding: 10px;
+        padding: 2px;
         color: #faad00;
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        width: auto;
     }
 
     div#inputdiv {
@@ -45,7 +54,7 @@
     }
 
     button#playpausebtn {
-        background: url(/images/pause-button30.png);
+        background: url(/images/pause-button30.png) no-repeat;
         border: none;
         width: 30px;
         height: 30px;
@@ -59,7 +68,7 @@
     }
 
     button#mutebtn {
-        background: url(/images/mute30.png);
+        background: url(/images/mute30.png) no-repeat;
         color: transparent;
         border: none;
         width: 30px;
@@ -204,10 +213,10 @@
         function playPause() {
             if (video.paused) {
                 video.play();
-                playbtn.style.background = "url(/images/pause-button30.png)";
+                playbtn.style.background = "url(/images/pause-button30.png) no-repeat";
             } else {
                 video.pause();
-                playbtn.style.background = "url(/images/play-button30.png)";
+                playbtn.style.background = "url(/images/play-button30.png) no-repeat";
             }
 
         }
@@ -246,10 +255,10 @@
         function vidmute() {
             if (video.muted) {
                 video.muted = false;
-                mutebtn.style.background = "url(/images/mute30.png)";
+                mutebtn.style.background = "url(/images/mute30.png) no-repeat";
             } else {
                 video.muted = true;
-                mutebtn.style.background = "url(/images/unmute30.png)";
+                mutebtn.style.background = "url(/images/unmute30.png) no-repeat";
             }
         }
 
@@ -277,7 +286,7 @@
         be found on the iPhone page
         <p></p>
         <div id="player" class="video_container">
-            <video id="dash-video-player" autoplay poster="/images/Metronom.gif">
+            <video id="dash-video-player" autoplay></video>
             </video>
             <div id="video_controls_bar">
                 <button id="playpausebtn"></button>
