@@ -24,7 +24,7 @@
     }
 
     div#player {
-        width: 800px;
+        width: 80%;
         background: #000;
         margin: 0px auto;
     }
@@ -36,14 +36,16 @@
         font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     }
 
-    span {
-        display: inline-block;
-        vertical-align: middle;
-        line-height: normal;
+    div#inputdiv {
+        background: #333333;
+        width: 200px;
+        color: #faad00;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        float: left;
     }
 
-    button#playpausebtn{
-        background: url(pause-button30.png);
+    button#playpausebtn {
+        background: url(/images/pause-button30.png);
         border: none;
         width: 30px;
         height: 30px;
@@ -52,10 +54,12 @@
         opacity: 0.3;
     }
 
-    button#playpausebtn:hover{ opacity:1; }
+    button#playpausebtn:hover {
+        opacity: 1;
+    }
 
-    button#mutebtn{
-        background: url(mute30.png);
+    button#mutebtn {
+        background: url(/images/mute30.png);
         color: transparent;
         border: none;
         width: 30px;
@@ -65,45 +69,74 @@
         cursor: pointer;
         opacity: 0.3;
     }
-    button#mutebtn:hover{ opacity:1; }
 
-    button#fullscreenbtn{
+    button#mutebtn:hover {
+        opacity: 1;
+    }
+
+    button#fullscreenbtn {
         background: #000;
         color: #faad00;
         border: none;
-        width: 35px;
+        width: 37px;
         height: 30px;
         cursor: pointer;
         float: right;
         opacity: 0.3;
     }
-    button#fullscreenbtn:hover{ opacity:1; }
+
+    button#fullscreenbtn:hover {
+        opacity: 1;
+    }
+
+    input#stream_app {
+        background: #000;
+        color: #faad00;
+        text-align: center;
+        border: dotted;
+        width: 130px;
+        float: left;
+    }
+
+    button#form_button {
+        background: #333333;
+        color: #faad00;
+        border: dotted;
+        border-color: #000;
+        cursor: pointer;
+        width: 70px;
+        float: right;
+        opacity: 0.3;
+    }
+    button#form_button:hover {
+        opacity: 1;
+    }
 
     input#seekSlider {
-        width: 400px;
+        width: 50%;
     }
 
     input#volumeSlider {
-        width: 100px;
+        width: 15%;
     }
 
     input[type='range'] {
         -webkit-appearance: none !important;
         background: #000;
-        border:#666 3px solid;
+        border: #666 3px solid;
         margin-right: 10px;
-        height:4px;
+        height: 4px;
     }
+
     input[type='range']::-webkit-slider-thumb {
         -webkit-appearance: none !important;
         background: #faad00;
-        height:15px;
-        width:15px;
+        height: 15px;
+        width: 15px;
         vertical-align: middle;
-        border-radius:100%;
-        cursor:pointer;
+        border-radius: 100%;
+        cursor: pointer;
     }
-
 </style>
 
 <body>
@@ -117,16 +150,16 @@
 
         function startStream() {
             firstLoad = false;
-            //var inputkey = document.getElementById("stream_app").value;
-            //if (inputkey != "") {
-            //  key = inputkey;
-            //} else {
-            //  key = defaultkey;
-            // }
-            // path = tech + "/" + key + "/" + file;
+            var inputkey = document.getElementById("stream_app").value;
+            if (inputkey != "") {
+                key = inputkey;
+            } else {
+                key = defaultkey;
+            }
+            path = tech + "/" + key + "/" + file;
             // path = "https://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd";
-            path = "https://yt-dash-mse-test.commondatastorage.googleapis.com/media/car-20120827-manifest.mpd"
-            //video = document.getElementById("dash-video-player");
+            // path = "https://yt-dash-mse-test.commondatastorage.googleapis.com/media/car-20120827-manifest.mpd"
+
             video = document.querySelector("#dash-video-player");
             playbtn = document.getElementById("playpausebtn");
             seekSlider = document.getElementById("seekSlider");
@@ -143,14 +176,10 @@
             mutebtn.addEventListener("click", vidmute, false);
             volumeSlider.addEventListener("change", setvolume, false);
             fullscreenbtn.addEventListener("click", toggleFullScreen, false);
-            //document.querySelector('#gainSlider').addEventListener('change', function() {
-            //  player1.setVolume(this.value)
-            //  document.getElementById("volume_label").innerHTML = player1.getVolume();
-            //  console.log(player1.getVolume())
-            //}, false);
+
             player1 = dashjs.MediaPlayer().create();
             player1.initialize(video, path, true);
-            //player1.setVolume(0.5);
+            video.volume = 0.1
             console.log(path);
         }
 
@@ -159,12 +188,12 @@
                 player1.reset();
             }
             firstLoad = false;
-            //var inputkey = document.getElementById("stream_app").value;
-            //if (inputkey != "") {
-            //  key = inputkey;
-            //} else {
-            //  key = defaultkey;
-            //}
+            var inputkey = document.getElementById("stream_app").value;
+            if (inputkey != "") {
+                key = inputkey;
+            } else {
+                key = defaultkey;
+            }
             path = tech + "/" + key + "/" + file;
             video = document.querySelector("#dash-video-player");
             player1 = dashjs.MediaPlayer().create();
@@ -175,10 +204,10 @@
         function playPause() {
             if (video.paused) {
                 video.play();
-                playbtn.style.background = "url(pause-button30.png)";
+                playbtn.style.background = "url(/images/pause-button30.png)";
             } else {
                 video.pause();
-                playbtn.style.background = "url(play-button30.png)";
+                playbtn.style.background = "url(/images/play-button30.png)";
             }
 
         }
@@ -206,6 +235,9 @@
             if (durmins < 10) {
                 durmins = "0" + durmins;
             }
+            if (durmins > 999) {
+                durmins = "999";
+            }
 
             curtimetext.innerHTML = curmins + ":" + cursecs;
             durtimetext.innerHTML = durmins + ":" + dursecs;
@@ -214,10 +246,10 @@
         function vidmute() {
             if (video.muted) {
                 video.muted = false;
-                mutebtn.style.background = "url(mute30.png)";
+                mutebtn.style.background = "url(/images/mute30.png)";
             } else {
                 video.muted = true;
-                mutebtn.style.background = "url(unmute30.png)";
+                mutebtn.style.background = "url(/images/unmute30.png)";
             }
         }
 
@@ -245,7 +277,7 @@
         be found on the iPhone page
         <p></p>
         <div id="player" class="video_container">
-            <video id="dash-video-player" width="800" height="600" autoplay poster="/images/Metronom.gif">
+            <video id="dash-video-player" autoplay poster="/images/Metronom.gif">
             </video>
             <div id="video_controls_bar">
                 <button id="playpausebtn"></button>
@@ -254,7 +286,11 @@
                 <span id="curtimetext">00:00</span> / <span id="durtimetext">00:00</span>
                 <button id="mutebtn">MUTE</button>
                 <input id="volumeSlider" type="range" min="0" max="100" value="10" step="1" />
-                <button id="fullscreenbtn">[ &nbsp; ]</button>
+                <button id="fullscreenbtn">[&nbsp; ]</button>
+            </div>
+            <div id="inputdiv">
+                <input type="text" name="stream_app" id="stream_app" required placeholder="Stream Name" class="form-control">
+                <button class="btn btn-default" id="form_button" type="button" onclick="switchStream()">Switch</button>
             </div>
         </div>
     </CENTER>
@@ -263,12 +299,7 @@
             startStream();
         });
     </script>
-    <!--div class="input-group" style="margin-top: 10px; margin-left: 10px; width: 240px;">
-    <input type="text" name="stream_app" id="stream_app" required placeholder="Stream Name" class="form-control">
-    <span class="input-group-btn input-btn">
-      <button class="btn btn-default" id="form_button" type="button" onclick="switchStream()">Switch Stream</button>
-   </span>
-  </div-->
+
 
 </body>
 
