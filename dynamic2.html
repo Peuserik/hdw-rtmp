@@ -32,7 +32,17 @@
     div#video_controls_bar {
         background: #333;
         padding: 10px;
-        color: #CCC
+        color: #CCC;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    button#playpausebtn{
+        background: url(play.png);
+        border: #666;
+        width: 20px;
+        height: 25px;
+        cursor: pointer;
+        opacity: 0.5;
     }
 
     input#seekSlider {
@@ -45,7 +55,8 @@
 
     input[type='range'] {
         -webkit-appearance: none !important;
-        background: #666;
+        background: #000;
+        border:#666 1px solid;
         height:4px;
     }
     input[type='range']::-webkit-slider-thumb {
@@ -131,10 +142,10 @@
         function playPause() {
             if (video.paused) {
                 video.play();
-                playbtn.innerHTML = "Pause";
+                //playbtn.innerHTML = "Pause";
             } else {
                 video.pause();
-                playbtn.innerHTML = "Play";
+                //playbtn.innerHTML = "Play";
             }
 
         }
@@ -204,7 +215,7 @@
             <video id="dash-video-player" width="800" height="600" autoplay poster="/images/Metronom.gif">
             </video>
             <div id="video_controls_bar">
-                <button id="playpausebtn" style="float:left;">Pause</button>
+                <button id="playpausebtn" style="float:left;"></button>
 
                 <input id="seekSlider" type="range" min="0" max="100" value="0" step="1" />
                 <span id="curtimetext">00:00</span> / <span id="durtimetext">00:00</span>
