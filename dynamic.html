@@ -188,8 +188,11 @@
 
             player1 = dashjs.MediaPlayer().create();
             player1.initialize(video, path, true);
+            var controlbar = new ControlBar(player1); //Player is instance of Dash.js MediaPlayer;
+            controlbar.initialize();
             video.volume = 0.1
             console.log(path);
+            getStreams()
         }
 
         function switchStream() {
@@ -286,7 +289,7 @@
         be found on the iPhone page
         <p></p>
         <div id="player" class="video_container">
-            <video id="dash-video-player" autoplay></video>
+            <video id="dash-video-player" autoplay ></video>
             </video>
             <div id="video_controls_bar">
                 <button id="playpausebtn"></button>
