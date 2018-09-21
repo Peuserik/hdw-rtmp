@@ -83,7 +83,7 @@ COPY --from=0 /usr/local/nginx /usr/local/nginx
 RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
-RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams/logs	&& \
+RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams/logs/	&& \
       apt-get update  && \
 	apt-get install --no-install-recommends -y \
       libssl-dev \
@@ -95,7 +95,7 @@ COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
 COPY ["run.sh", "publish.sh", "index.html", "ihls.html", "dynamic.html", "hdw.html", "/srv/www/" ]
-RUN chmod +x /srv/www/run.sh /srv/www/publish.sh 
+RUN chmod +x /srv/www/run.sh /srv/www/publish.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
 RUN chown nginx:nginx -R /srv/www
