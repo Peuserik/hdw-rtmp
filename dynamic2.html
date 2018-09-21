@@ -190,6 +190,7 @@
             player1 = dashjs.MediaPlayer().create();
             player1.initialize(video, path, true);
             video.volume = 0.1
+
             console.log(path);
         }
 
@@ -278,6 +279,26 @@
                 video.mozRequestFullScreen();
             }
         }
+
+        function refresh() {
+            var streams;
+            var button;
+            var curStr = document.getElementById("currentStreams");
+            streams = [ 
+                'konf', 'konf123'
+            ];
+            for (i = 0; i < streams.length; i++) {
+                button = document.createElement("button");
+                button.innerHTML = streams[i];
+                console.log(streams[i])
+                button.addEventListener('click', function() { 
+                    alert("clicked " + streams[i]); 
+                    console.log(streams[i])
+                    });
+                curStr.appendChild(button)
+            }
+
+        }
     </script>
 
     <CENTER>
@@ -301,6 +322,9 @@
             <div id="inputdiv">
                 <input type="text" name="stream_app" id="stream_app" required placeholder="Stream Name" class="form-control">
                 <button class="btn btn-default" id="form_button" type="button" onclick="switchStream()">Switch</button>
+            </div>
+            <div id="currentStreams">
+                <button class="btn btn-default" id="newbtn" type="button" onclick="refresh()">Refresh</button>
             </div>
         </div>
     </CENTER>
