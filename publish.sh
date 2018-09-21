@@ -7,19 +7,22 @@ function=$1
 STREAM=$2
 DATE=`date +%Y.%m.%d-%H:%M:%S`
 
-echo "$DATE ;Function: $function " >> /dev/stdout
-echo "$DATE ;STREAM: $STREAM " >> /dev/stdout
+
+
+echo "$DATE ;Function: $function " >> /srv/www/log/stream.log
+echo "$DATE ;STREAM: $STREAM " >> /srv/www/log/stream.log
 
 if [ "$function" == "ADD" ]; then
-    cp /srv/www/dynamic.html /tmp
-    sed -i "/\[ /a '$STREAM'," /tmp/dynamic.html
-    cat /tmp/dynamic.html >/srv/www/dynamic.html
-    echo "$DATE Adding STREAM: $STREAM to the strreaming page" >> /dev/stdout
+    cp /srv/www/dynamic2.html /tmp
+    sed -i "/'konf',/a '$STREAM'," /tmp/dynamic.html
+    cat /tmp/dynamic2.html >/srv/www/dynamic.html
 elif [ "$function" == "REMOVE" ]; then
-    cp /srv/www/dynamic.html /tmp
+    cp /srv/www/dynamic2.html /tmp
     sed -i "/'$STREAM',/d" /tmp/dynamic.html
-    cat /tmp/dynamic.html >/srv/www/dynamic.html
-    echo "$DATE Removing STREAM: $STREAM from the strreaming page" >> /dev/stdout
+    cat /tmp/dynamic2.html >/srv/www/dynamic.html
 else
-    echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /dev/stderr
+    echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /srv/www/log/stream.log
 fi
+
+
+# TODO create Folders
