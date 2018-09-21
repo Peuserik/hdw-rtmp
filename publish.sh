@@ -14,12 +14,12 @@ echo "$DATE ;STREAM: $STREAM " >> /srv/www/log/stream.log
 
 if [ "$function" == "ADD" ]; then
     cp /srv/www/dynamic2.html /tmp
-    sed -i "/'konf',/a '$STREAM'," /tmp/dynamic2.html
-    cat /tmp/dynamic2.html >/srv/www/dynamic2.html
+    sed -i "/'konf',/a '$STREAM'," /tmp/dynamic.html
+    cat /tmp/dynamic2.html >/srv/www/dynamic.html
 elif [ "$function" == "REMOVE" ]; then
     cp /srv/www/dynamic2.html /tmp
-    sed -i "/'$STREAM',/d" /tmp/dynamic2.html
-    cat /tmp/dynamic2.html >/srv/www/dynamic2.html
+    sed -i "/'$STREAM',/d" /tmp/dynamic.html
+    cat /tmp/dynamic2.html >/srv/www/dynamic.html
 else
     echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /srv/www/log/stream.log
 fi
