@@ -31,6 +31,12 @@
         object-fit: cover;
     }
 
+    div#otherStreams {
+        background: #333333;
+        width: 400px;
+        color: #faad00;
+    }
+
     #dash-video-player {
         width: 100%;
         height: auto;
@@ -122,6 +128,20 @@
         opacity: 1;
     }
 
+    button#newbtn {
+        background: #333333;
+        color: #faad00;
+        border: dotted;
+        border-color: #000;
+        cursor: pointer;
+        float: right;
+        width: 100px;
+        opacity: 0.3;
+    }
+    button#newbtn:hover {
+        opacity: 1;
+    }
+
     input#seekSlider {
         width: 50%;
     }
@@ -147,6 +167,14 @@
         border-radius: 100%;
         cursor: pointer;
     }
+
+    .streamBtns {
+        background: #333333;
+        color: #faad00;
+        width: 60px;
+        height: 30px;
+        float: left;
+    }
 </style>
 
 <body>
@@ -155,20 +183,18 @@
         var defaultkey = 'konf';
         var tech = 'dash';
         var file = "index.mpd",
-            path, video;
+            path, video, inputkey;
         var playbtn, mutebtn, fullscreenbtn, seekSlider, curtimetext, durtimetext;
 
         function startStream() {
             firstLoad = false;
-            var inputkey = document.getElementById("stream_app").value;
+            inputkey = document.getElementById("stream_app").value;
             if (inputkey != "") {
                 key = inputkey;
             } else {
                 key = defaultkey;
             }
             path = tech + "/" + key + "/" + file;
-            // path = "https://yt-dash-mse-test.commondatastorage.googleapis.com/media/motion-20120802-manifest.mpd";
-            // path = "https://yt-dash-mse-test.commondatastorage.googleapis.com/media/car-20120827-manifest.mpd"
 
             video = document.querySelector("#dash-video-player");
             playbtn = document.getElementById("playpausebtn");
@@ -190,16 +216,13 @@
             player1 = dashjs.MediaPlayer().create();
             player1.initialize(video, path, true);
             video.volume = 0.1
-
-            console.log(path);
         }
 
-        function switchStream() {
+        function switchStream(inputkey = document.getElementById("stream_app").value) {
             if (!firstLoad) {
                 player1.reset();
             }
             firstLoad = false;
-            var inputkey = document.getElementById("stream_app").value;
             if (inputkey != "") {
                 key = inputkey;
             } else {
@@ -208,9 +231,8 @@
             path = tech + "/" + key + "/" + file;
             video = document.querySelector("#dash-video-player");
             player1 = dashjs.MediaPlayer().create();
-            player1.initialize(video, path, false);
+            player1.initialize(video, path, true);
         }
-
 
         function playPause() {
             if (video.paused) {
@@ -270,7 +292,6 @@
         }
 
         function toggleFullScreen() {
-
             if (video.requestFullScreen) {
                 video.requestFullScreen();
             } else if (video.webkitRequestFullScreen) {
@@ -283,21 +304,23 @@
         function refresh() {
             var streams;
             var button;
-            var curStr = document.getElementById("currentStreams");
+            var curStr = document.getElementById("otherStreams");
             streams = [ 
-                'konf', 'konf123'
             ];
-            for (i = 0; i < streams.length; i++) {
-                button = document.createElement("button");
-                button.innerHTML = streams[i];
-                console.log(streams[i])
-                button.addEventListener('click', function() { 
-                    alert("clicked " + streams[i]); 
-                    console.log(streams[i])
-                    });
-                curStr.appendChild(button)
-            }
 
+            while (curStr.firstChild) {
+                curStr.removeChild(curStr.firstChild);
+            }
+            
+            streams.forEach(function(button, index) {
+                button = document.createElement("button");
+                button.innerHTML = streams[index];
+                button.setAttribute("class", "streamBtns");
+                button.addEventListener('click', function () {
+                    switchStream(button.innerHTML);
+                });
+                curStr.appendChild(button)
+            });
         }
     </script>
 
@@ -323,8 +346,11 @@
                 <input type="text" name="stream_app" id="stream_app" required placeholder="Stream Name" class="form-control">
                 <button class="btn btn-default" id="form_button" type="button" onclick="switchStream()">Switch</button>
             </div>
-            <div id="currentStreams">
-                <button class="btn btn-default" id="newbtn" type="button" onclick="refresh()">Refresh</button>
+            <div id="currentStreams" style="float: right; width: 200px;" >
+                <button class="btn btn-default" id="newbtn" type="button" onclick="refresh()">All Streams</button>
+                <div id="otherStreams">
+
+                </div>
             </div>
         </div>
     </CENTER>
