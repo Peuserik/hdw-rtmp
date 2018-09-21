@@ -7,6 +7,8 @@ function=$1
 STREAM=$2
 DATE=`date +%Y.%m.%d-%H:%M:%S`
 
+
+
 echo "$DATE ;Function: $function " >> /srv/www/log/stream.log
 echo "$DATE ;STREAM: $STREAM " >> /srv/www/log/stream.log
 
@@ -21,3 +23,6 @@ elif [ "$function" == "REMOVE" ]; then
 else
     echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /srv/www/log/stream.log
 fi
+
+
+# TODO create Folders
