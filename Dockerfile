@@ -1,8 +1,5 @@
 FROM ubuntu:18.04 as builder
 
-# Surpress Upstart errors/warning
-RUN dpkg-divert --local --rename --add /sbin/initctl && ln -sf /bin/true /sbin/initctl
-
 # Let the conatiner know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -78,6 +75,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
+ENV DEBIAN_FRONTEND noninteractive
 
 COPY --from=0 /tmp/nginx-rtmp-module/stat.xsl /tmp/stat.xsl
 COPY --from=0 /usr/local/nginx /usr/local/nginx
