@@ -14,7 +14,7 @@ echo "$DATE ;STREAM: $STREAM " >> /srv/www/streams/logs/stream.log
 
 if [ "$function" == "ADD" ]; then
     cp /srv/www/dynamic.html /tmp
-    sed -i "/'konf',/a '$STREAM'," /tmp/dynamic.html
+    sed -i "/\[ /a '$STREAM'," /tmp/dynamic.html
     cat /tmp/dynamic.html >/srv/www/dynamic.html
 elif [ "$function" == "REMOVE" ]; then
     cp /srv/www/dynamic.html /tmp
