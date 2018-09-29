@@ -1,8 +1,5 @@
 FROM ubuntu:18.04 as builder
 
-# Surpress Upstart errors/warning
-RUN dpkg-divert --local --rename --add /sbin/initctl && ln -sf /bin/true /sbin/initctl
-
 # Let the conatiner know that there is no tty
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -78,6 +75,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
+ENV DEBIAN_FRONTEND noninteractive
 
 COPY --from=0 /tmp/nginx-rtmp-module/stat.xsl /tmp/stat.xsl
 COPY --from=0 /usr/local/nginx /usr/local/nginx
@@ -85,7 +83,7 @@ COPY --from=0 /usr/local/nginx /usr/local/nginx
 RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
-RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams	&& \
+RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams/logs/	&& \
       apt-get update  && \
 	apt-get install --no-install-recommends -y \
       libssl-dev \
@@ -96,10 +94,11 @@ RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams	&&
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 COPY hdw.conf /usr/local/nginx/conf/sites-enabled/hdw.conf
 COPY health.conf /usr/local/nginx/conf/sites-enabled/health.conf
-COPY ["run.sh", "index.html", "ihls.html", "dynamic.html", "hdw.html", "/srv/www/" ]
-RUN chmod +x /srv/www/run.sh
+COPY ["run.sh", "publish.sh", "index.html", "ihls.html", "dynamic.html", "hdw.html", "/srv/www/" ]
+RUN chmod +x /srv/www/run.sh /srv/www/publish.sh
 ADD player /srv/www/player
 ADD images /srv/www/images
+RUN chown nginx:nginx -R /srv/www
 
 VOLUME ["/srv/www/","/usr/local/nginx/logs", "/usr/local/nginx/conf/ssl"]
 
