@@ -9,8 +9,8 @@ DATE=`date +%Y.%m.%d-%H:%M:%S`
 
 
 
-echo "$DATE ;Function: $function " >> /srv/www/streams/logs/stream.log
-echo "$DATE ;STREAM: $STREAM " >> /srv/www/streams/logs/stream.log
+echo "$DATE ;Function: $function " >> /dev/stdout
+echo "$DATE ;STREAM: $STREAM " >> /dev/stdout
 
 if [ "$function" == "ADD" ]; then
     cp /srv/www/dynamic.html /tmp
@@ -21,7 +21,7 @@ elif [ "$function" == "REMOVE" ]; then
     sed -i "/'$STREAM',/d" /tmp/dynamic.html
     cat /tmp/dynamic.html >/srv/www/dynamic.html
 else
-    echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /srv/www/streams/logs/stream.log
+    echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /dev/stderr
 fi
 
 
