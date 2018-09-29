@@ -40,12 +40,12 @@ TLS 1.2 secured with a rating of A+ on ssllabs (2018-07)
 
 ## Versions
 
-* nginx version: 1.15.1
+* nginx version: 1.16.0
 * [rtmp-module for nginx](https://github.com/sergey-dryabzhinsky/nginx-rtmp-module "sergey-dryabzhinsky/nginx-rtmp-module"): master branch
 * Ubuntu: 18.04
 * [hdw player free](https://www.hdwplayer.com/): 3.0
 * [dash player](https://github.com/Dash-Industry-Forum/dash.js): latest
-* [**Kubernertes 1.9**](kubernetes/kubernetes.md) testet
+* [**Kubernertes 1.9,1.11,1.12**](kubernetes/kubernetes.md) testet
 ---
 
 ## How to use
@@ -197,4 +197,5 @@ docker run -d --name rtmp -v $(pwd)/tls:/usr/local/nginx/conf/ssl -e STREAMUSER=
 
 # ToDo
 
+variant added
 To lazy to continue right now.
