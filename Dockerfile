@@ -84,6 +84,7 @@ RUN ln -sf /dev/stdout /usr/local/nginx/logs/access.log \
 	&& ln -sf /dev/stderr /usr/local/nginx/logs/error.log
 
 RUN  groupadd nginx && useradd -m -g nginx nginx && mkdir -p /srv/www/streams/logs/	&& \
+      ln -sf /dev/stdout /srv/www/streams/logs/stream.log && \
       apt-get update  && \
 	apt-get install --no-install-recommends -y \
       libssl-dev \
