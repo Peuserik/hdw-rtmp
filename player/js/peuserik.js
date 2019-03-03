@@ -1,7 +1,7 @@
 var player1, firstLoad = true;
 var defaultkey = 'konf';
 var tech = 'dash';
-var file = "index.mpd",
+var file = ".mpd",
     path, video, inputkey;
 var playbtn, mutebtn, fullscreenbtn, seekSlider, curtimetext, durtimetext;
 
@@ -13,7 +13,7 @@ function startStream() {
     } else {
         key = defaultkey;
     }
-    path = tech + "/" + key + "/" + file;
+    path = tech + "/" + key + file;
 
     video = document.querySelector("#dash-video-player");
     playbtn = document.getElementById("playpausebtn");
@@ -47,7 +47,7 @@ function switchStream(inputkey = document.getElementById("stream_app").value) {
     } else {
         key = defaultkey;
     }
-    path = tech + "/" + key + "/" + file;
+    path = tech + "/" + key + file;
     video = document.querySelector("#dash-video-player");
     player1 = dashjs.MediaPlayer().create();
     player1.initialize(video, path, true);
