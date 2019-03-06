@@ -110,7 +110,7 @@ button#newbtn {
     border-color: #000;
     cursor: pointer;
     float: right;
-    width: 100px;
+    width: 180px;
     opacity: 0.3;
 }
 button#newbtn:hover {
