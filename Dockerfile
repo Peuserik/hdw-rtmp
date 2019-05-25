@@ -373,7 +373,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Add sources for latest nginx
 # Install software requirements
 
-ENV nginx_version 1.15.8
+ENV nginx_version 1.16.0
 
 ARG BUILD_DATE
 ARG VCS_REF
