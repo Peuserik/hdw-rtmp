@@ -24,7 +24,7 @@ ARG        MAKEFLAGS="-j2"
 ENV         FFMPEG_VERSION=4.1.3      \
             FDKAAC_VERSION=2.0.0      \
             LAME_VERSION=3.100        \
-            LIBASS_VERSION=0.14.0     \
+            LIBASS_VERSION=0.13.7     \
             OGG_VERSION=1.3.3         \
             OPENCOREAMR_VERSION=0.1.5 \
             OPUS_VERSION=1.3.1        \
@@ -50,7 +50,7 @@ ARG         THEORA_SHA256SUM="40952956c47811928d1e7922cda3bc1f427eb75680c3c37249
 ARG         XVID_SHA256SUM="4e9fd62728885855bc5007fe1be58df42e5e274497591fec37249e1052ae316f  xvidcore-1.3.4.tar.gz"
 ARG         FREETYPE_SHA256SUM="955e17244e9b38adb0c98df66abb50467312e6bb70eac07e49ce6bd1a20e809a  freetype-2.10.0.tar.gz"
 ARG         LIBVIDSTAB_SHA256SUM="14d2a053e56edad4f397be0cb3ef8eb1ec3150404ce99a426c4eb641861dc0bb  v1.1.0.tar.gz"
-ARG         LIBASS_SHA256SUM="8d5a5c920b90b70a108007ffcd2289ac652c0e03fc88e6eecefa37df0f2e7fdf  0.14.0.tar.gz"
+ARG         LIBASS_SHA256SUM="8fadf294bf701300d4605e6f1d92929304187fca4b8d8a47889315526adbafd7  0.13.7.tar.gz"
 ARG         FRIBIDI_SHA256SUM="3fc96fa9473bd31dcb5500bdf1aa78b337ba13eb8c301e7c28923fea982453a8  0.19.7.tar.gz"
 
 
@@ -262,7 +262,7 @@ RUN  \
         DIR=/tmp/fontconfig && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
-        curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.bz2 &&\
+        curl -sLO https://www.freedesktop.org/software/fontconfig/release/fontconfig-${FONTCONFIG_VERSION}.tar.bz2 && \
         tar -jx --strip-components=1 -f fontconfig-${FONTCONFIG_VERSION}.tar.bz2 && \
         ./configure -prefix="${PREFIX}" --disable-static --enable-shared && \
         make && \

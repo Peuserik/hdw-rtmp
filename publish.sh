@@ -23,5 +23,3 @@ elif [ "$function" == "REMOVE" ]; then
 else
     echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT." >> /srv/www/streams/logs/stream.log
 fi
-
-# TODO create Folders
