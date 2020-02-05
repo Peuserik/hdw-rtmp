@@ -144,6 +144,7 @@ STREAMPW=stream - sets the password for the streaming page and hls access.
 STATSUSER=stats - set the user for the stats page.
 STATSPW=page - set the password for the stats page.
 
+WEBHOOK_URL=http://testingwebhook - sets the discord webhook to send a message for going live.
 TARGET=localhost - sets the target stream page for the hdw player configuration. Should point to your Server IP address or DNS Name
 KEY=key - set the stream key for your stream. This is only required if you want to use the build in players and change the default stream key you are streaming with.
 ```
