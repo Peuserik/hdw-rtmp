@@ -1,0 +1,210 @@
+https://hub.docker.com/r/peuserik/hdw-rtmp/builds/[image:http://dockerbuildbadges.quelltext.eu/status.svg?organization=peuserik&repository=hdw-rtmp[image]] https://microbadger.com/images/peuserik/hdw-rtmp[image:https://images.microbadger.com/badges/image/peuserik/hdw-rtmp.svg[image]] https://microbadger.com/images/peuserik/hdw-rtmp[image:https://images.microbadger.com/badges/version/peuserik/hdw-rtmp.svg[image]] https://microbadger.com/images/peuserik/hdw-rtmp[image:https://images.microbadger.com/badges/commit/peuserik/hdw-rtmp.svg[image]]
+
+= NGINX RTMP
+
+with hdw(flash), dash and hls player. I’m using basic auth for simple security. The container supports only TLS. Without certificates with the right names for the configuration the container will not start.
+
+
+= What is this about
+
+NGINX server with RTMP-module with three players to watch the stream.
+
+[width="100%",cols="32%,68%",options="header",]
+|=========================================================================================================================
+|Player |Description
+|https://www.hdwplayer.com/[hdw player free] |on the hdw page - free flash player with rtmp capabilities.
+|https://github.com/Dash-Industry-Forum/dash.js[dash player] |On the first page and installed for dynamic streaming switch
+|HTML5 video tag HLS player |For Apple and HLS compatible devices/software on the iPhone page
+|=========================================================================================================================
+
+Simple basic auth for protecting the content. But only in Source Output right now. The RTMP Stream input does not have authentication. TLS 1.2, TLS 1.3 secured with a rating of A+ on ssllabs (2018-07)
+
+If you are as a big of a fan of kubernetes like me, you will find the 
+https://kubernetes.io/[Kubernertes] instructions in the link:kubernetes/kubernetes.md[*Kubernertes folder*]
+
+'''''
+
+== Contents
+
+* link:#versions[*Versions*]
+* link:#how-to-use[*How to use*]
+** link:#build-and-run-the-image[Build and run the image]
+** link:#access-the-services[Access The Services]
+* link:#default-parameter[*Default Parameter*]
+* link:#set-configuration[*Change default configuration*]
+** link:#create-new-passwords[Create new passwords]
+*** link:#ubuntu[Ubuntu]
+*** link:#todo[CentOS/ToDO]
+* link:kubernetes/kubernetes.md[*Kubernertes*]
+* link:kubernetes/Webhook.md[*Go live messages*]
+
+'''''
+
+== Versions
+
+* nginx version: 1.17.5
+* https://github.com/sergey-dryabzhinsky/nginx-rtmp-module[rtmp-module for nginx]: master branch
+* Ubuntu: 18.04
+* https://www.hdwplayer.com/[hdw player free]: 3.0
+* https://github.com/Dash-Industry-Forum/dash.js[dash player]: latest
+* link:kubernetes/kubernetes.md[*Kubernertes 1.13,1.14*] testet
+
+== How to use
+
+=== Build and run the image
+
+==== Clone
+
+[source,bash]
+----
+git clone https://github.com/Peuserik/hdw-rtmp.git
+----
+
+==== Build
+
+[source,bash]
+----
+cd hdw-rtmp
+docker build -t peuserik/hdw-rtmp .
+----
+
+==== OR Just pull
+
+* If you just want to use it pull the image from hub.docker.com
+
+[source,bash]
+----
+docker pull peuserik/hdw-rtmp
+----
+
+[plantuml, "testdia", "png"]
+----
+skinparam usecase { 
+    BackgroundColor YellowGreen 
+}
+:rtmp server: as server << rtmp server2 >>
+User -> (rtmp server) : stream
+you <-> me
+----
+
+==== Make it Run
+
+* You need fullchain, privatekey and dhparam in pem format. They have to be named: `fullchain.pem`, `privkey.pem` and `dhparam.pem`. I recommend creating valid certificates with https://letsencrypt.org/[let’s encrypt]
+* To start the container with default parameters just use:
+
+[source,bash]
+----
+docker run -d --name rtmp -v $(pwd)/tls:/usr/local/nginx/conf/ssl -p 1935:1935 -p 443:443 peuserik/hdw-rtmp
+----
+
+=== Access The Services
+
+With default configuration you can access the DASH on localhost `https://localhost` You will find a link to hdw and HLS players there `https://localhost/iPhone.html` or `https://localhost/hdw.html`
+
+–
+
+_rtmp_ entrypoint is default rtmp port 1935. That means using rtmp with your stream program defaults to: `rtmp://localhost/live/$streamkey` *HLS* direct access for software players t.e. VLC is on. `https://localhost/hls/$streamkey/index.m3u8` *DASH* direct access for software players t.e. VLC is on. `https://localhost/dash/$streamkey/index.mpd`
+
+==== How to test
+
+With the default configuration you can test the streaming part with for example https://obsproject.com/[OBS Studio] or http://www.maartenbaert.be/simplescreenrecorder/[SimpleScreenRecorder] on your local machine. The streaming part will also work on a remote machine. Only The build in webplayers need extra configuration to work on a remote server. How that works and how to change the default password is described in the link:#extra-configuration[Extra configuration] part.
+
+==== Test streaming with OBS
+
+* Run the container
+* In obs change the ``Stream Type'' to ``Custom Streaming Server''
+* In the ``URL'' field enter the rtmp entrypoint, with default configuration to set locally its `rtmp://localhost/live`
+* In the ``Stream key'' field add the stream app name you want to expose your stream on for example our default ``key''
+* Start streaming
+* OBS shows you in the bottom right an output stream bandwidth
+
+==== Test playing the stream with VLC
+
+* Open http://www.videolan.org/vlc/index.html[VLC] player
+* Click on ``Media'' -> ``Open Network Stream''
+* Enter the rtmp url from above `rtmp://localhost/live/$streamkey` In our example we used key as stream key. so the url would be `rtmp://localhost/live/key`
+* Or use the hls url like this `http://user:password@localhost/hls/$streamkey/index.m3u8` in our example `http://live:stream@localhost/hls/key/index.m3u8`
+
+==== Test playing the stream with the hdw player
+
+* go in your browser to `https://localhost`
+* supply the user and password for the basic auth
+* Activate Flash in your Browser if prompted to.
+* Why *Flash?* RTMP is a Flash technology and not natively supported by html5. html5 players will default back to flash when using a rtmp stream as source. If you need something else consider using dash f.e.*
+* press play; the video takes a few seconds to start.
+
+_The dafault passwords are shared in the authentification part_
+
+==== Test playing the stream with the dash player
+
+* go in your browser to `https://localhost/dynamic.html`
+* supply the user and password for the basic auth
+* press play; the video takes a few seconds to start.
+
+'''''
+
+== Default Parameter
+
+[source,none]
+----
+STREAMUSER=live - sets the user for the streaming page and hls access.
+STREAMPW=stream - sets the password for the streaming page and hls access.
+STATSUSER=stats - set the user for the stats page.
+STATSPW=page - set the password for the stats page.
+
+WEBHOOK_URL=http://testingwebhook - sets the discord webhook to send a message for going live.
+TARGET=localhost - sets the target stream page for the hdw player configuration. Should point to your Server IP address or DNS Name
+KEY=key - set the stream key for your stream. This is only required if you want to use the build in players and change the default stream key you are streaming with.
+----
+
+'''''
+
+== Set configuration
+
+To change the default parameters just override them with the run command. The passwords for the basic auth have to be encrypted before given to the run command. For the how see link:#create-new-passwords[below]
+
+[source,bash]
+----
+docker run -d --name rtmp -v $(pwd)/tls:/usr/local/nginx/conf/ssl -e STREAMUSER=$USER' -e STREAMPW='$ENCRYPTEDPASSWORD' -e TARGET='my-cool.server.com' -e KEY='mycoolstreamapp' -p 1935:1935 -p 443:443 peuserik/hdw-rtmp
+----
+
+=== Create new passwords
+
+The Password has to be entered as encrypted string.
+
+==== Ubuntu
+
+There are multiple methods to create the required string format. I will show here the openssl method
+
+*Openssl*
+
+The command is: `openssl passwd -apr1`
+
+This command will prompt you for the password you want to use and then again for a confirmation of that password. It will give you the encrypted password you can use for configurations the two PW parameter.
+
+_*_notice_*: the password will not be displayed while typing_
+
+=== Example commandline
+
+[source,bash]
+----
+openssl passwd -apr1
+Password:
+Verifying - Password:
+$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.
+----
+
+==== Complete example
+
+To use it with the image just give it as env variable.
+
+[source,bash]
+----
+docker run -d --name rtmp -v $(pwd)/tls:/usr/local/nginx/conf/ssl -e STREAMUSER='stream' -e STREAMPW='$apr1$9AY0gkTk$KaaNQx6jpkL49i3yYHjUX.' -e TARGET='my-cool.server.com' -p 1935:1935 -p 80:80 peuserik/hdw-rtmp
+----
+
+'''''
+
+= ToDo
+
+variant added To lazy to continue right now.
