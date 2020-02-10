@@ -48,12 +48,6 @@ if [ "$WEBHOOK_URL" != "http://testingwebhook" ]; then
         curl -d "$JSON" -H 'Content-Type: application/json' $WEBHOOK_URL
 
         echo "$DATE Message send to discord for going offline for Stream: $STREAM " >> /srv/www/streams/logs/stream.log
-    elif [ "$function" == "STARTUP" ]; then
-        MESSAGE="Hello! I'm online and ready to receive and show your streams"
-        JSON="{\"content\": \"$MESSAGE\"}"
-        curl -d "$JSON" -H 'Content-Type: application/json' $WEBHOOK_URL
-
-        echo "$DATE Message send to discord for server online: $MESSAGE " >> /srv/www/streams/logs/stream.log
     else
         echo "$DATE ; NO HIT! WRONG PARAMETERS FOR SCRIPT. in Discord webhook" >> /srv/www/streams/logs/stream.log
     fi
