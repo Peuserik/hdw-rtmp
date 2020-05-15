@@ -47,6 +47,11 @@ spec:
             configMapKeyRef:
               key: KEY
               name: rtmp-tv-config
+        - name: WEBHOOK_URL
+          valueFrom:
+            configMapKeyRef:
+              key: WEBHOOK_URL
+              name: rtmp-tv-config
         image: peuserik/hdw-rtmp
         imagePullPolicy: Always
         name: hdw-rtmp
