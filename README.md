@@ -1,25 +1,30 @@
-[![](http://dockerbuildbadges.quelltext.eu/status.svg?organization=peuserik&repository=hdw-rtmp)](https://hub.docker.com/r/peuserik/hdw-rtmp/builds/) [![](https://images.microbadger.com/badges/image/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp) [![](https://images.microbadger.com/badges/version/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp) [![](https://images.microbadger.com/badges/commit/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp)
+# hdw-rtmp
 
-# NGINX RTMP 
-with hdw, dash and hls player.
-I'm using basic auth for simple security. Without certificates with the right name the container will not start.
+A Docker image that bundles **NGINX with the RTMP module**, **FFmpeg**, and three browser-based video players into a single, self-contained live-streaming server.
 
-## **Switched to tls only**
+## What is this?
 
-# What is this about
+This repository provides everything you need to run your own live-streaming server:
 
-NGINX server with RTMP-module with three players to watch the stream.
+- **Ingest**: Accept a live video stream over RTMP (e.g. from OBS Studio or SimpleScreenRecorder) on port 1935.
+- **Transcode**: FFmpeg automatically re-encodes the incoming stream into two quality levels (native resolution and a 640×360 low-bandwidth variant).
+- **Serve**: Expose the transcoded stream as HLS and MPEG-DASH for wide client compatibility, and over RTMP for software players such as VLC.
+- **Watch**: Three built-in web players let you watch the stream right in your browser, all protected by HTTP Basic Auth over TLS.
+- **Deploy**: Ready-made Kubernetes manifests (including a stateful NFS-backed scaling example) are included in the [`kubernetes/`](kubernetes/kubernetes.md) folder.
 
-| Player | Description |
-| -----  | ----------- |
-| [hdw player free](https://www.hdwplayer.com/) | on the hdw page - free flash player with rtmp capabilities. |
-| [dash player](https://github.com/Dash-Industry-Forum/dash.js) | On the first page and installed for dynamic streaming switch |
-| HTML5 video tag HLS player | For Apple and HLS compatible devices/software on the iPhone page |
+## Built-in players
 
-Simple basic auth for protecting the content. But only in Source Output right now. The RTMP Stream input does not have authentication.
-TLS 1.2 secured with a rating of A+ on ssllabs (2018-07)
+| Player | URL (default) | Description |
+| ------ | ------------- | ----------- |
+| [dash.js](https://github.com/Dash-Industry-Forum/dash.js) | `https://localhost/` | MPEG-DASH player with adaptive bitrate switching. |
+| [HDW Player Free](https://www.hdwplayer.com/) | `https://localhost/hdw.html` | Flash-based RTMP player. |
+| HTML5 HLS | `https://localhost/iPhone.html` | Native HLS player for Apple/mobile devices. |
 
-[Kubernertes](https://kubernetes.io/) instructions can be found in the [**Kubernertes folder**](kubernetes/kubernetes.md)
+Basic Auth protects the web players and HLS/DASH endpoints. The RTMP input port (1935) is unauthenticated by default.
+
+TLS (HTTPS) is required — HTTP requests are automatically redirected to HTTPS.
+
+For Kubernetes deployment instructions see the [**Kubernetes folder**](kubernetes/kubernetes.md).
 
 ---
 
@@ -32,9 +37,7 @@ TLS 1.2 secured with a rating of A+ on ssllabs (2018-07)
 - [**Default Parameter**](#default-parameter)
 - [**Change default configuration**](#set-configuration)
   - [Create new passwords](#create-new-passwords)
-    - [Ubuntu](#ubuntu)
-    - [CentOS/ToDO](#todo)
-- [**Kubernertes**](kubernetes/kubernetes.md)
+- [**Kubernetes**](kubernetes/kubernetes.md)
 
 ---
 
@@ -45,7 +48,7 @@ TLS 1.2 secured with a rating of A+ on ssllabs (2018-07)
 * Ubuntu: 18.04
 * [hdw player free](https://www.hdwplayer.com/): 3.0
 * [dash player](https://github.com/Dash-Industry-Forum/dash.js): latest
-* [**Kubernertes 1.9,1.11,1.12**](kubernetes/kubernetes.md) testet
+* [**Kubernetes 1.9, 1.11, 1.12**](kubernetes/kubernetes.md) tested
 ---
 
 ## How to use
@@ -197,5 +200,5 @@ docker run -d --name rtmp -v $(pwd)/tls:/usr/local/nginx/conf/ssl -e STREAMUSER=
 
 # ToDo
 
-variant added
-To lazy to continue right now.
+- [ ] Add CentOS password generation instructions.
+- [ ] Add RTMP authentication support.
