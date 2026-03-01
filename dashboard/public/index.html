@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- ── Login view ─────────────────────────────────────────────────────── -->
+  <div id="login-view" class="view">
+    <div class="login-card">
+      <div class="login-logo">🎥</div>
+      <h1>Stream Dashboard</h1>
+      <form id="login-form">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" type="text" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" required>
+        </div>
+        <div id="login-error" class="error hidden"></div>
+        <button type="submit" id="login-btn">Sign in</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── Dashboard view ────────────────────────────────────────────────── -->
+  <div id="dashboard-view" class="view hidden">
+    <header>
+      <div class="header-left">
+        <span class="logo">🎥</span>
+        <h1>Stream Dashboard</h1>
+      </div>
+      <div class="header-right">
+        <span id="stream-count" class="stream-count">0 streams</span>
+        <span id="connection-status" class="status-dot offline" title="Connecting…"></span>
+        <button id="logout-btn" class="btn-sm">Sign out</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="no-streams" class="empty-state hidden">
+        <div class="empty-icon">📡</div>
+        <p>No active streams</p>
+        <p class="hint">Push a stream to
+          <code>rtmp://&lt;server&gt;/live/&lt;key&gt;</code>
+        </p>
+      </div>
+      <div id="streams-grid" class="streams-grid"></div>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

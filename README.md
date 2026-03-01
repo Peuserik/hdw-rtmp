@@ -1,54 +1,78 @@
-[![](http://dockerbuildbadges.quelltext.eu/status.svg?organization=peuserik&repository=hdw-rtmp)](https://hub.docker.com/r/peuserik/hdw-rtmp/builds/) [![](https://images.microbadger.com/badges/image/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp) [![](https://images.microbadger.com/badges/version/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp) [![](https://images.microbadger.com/badges/commit/peuserik/hdw-rtmp.svg)](https://microbadger.com/images/peuserik/hdw-rtmp)
+# hdw-rtmp
 
-# NGINX RTMP 
-with hdw, dash and hls player.
-I'm using basic auth for simple security. Without certificates with the right name the container will not start.
-
-## **Switched to tls only**
-
-# What is this about
-
-NGINX server with RTMP-module with three players to watch the stream.
-
-| Player | Description |
-| -----  | ----------- |
-| [hdw player free](https://www.hdwplayer.com/) | on the hdw page - free flash player with rtmp capabilities. |
-| [dash player](https://github.com/Dash-Industry-Forum/dash.js) | On the first page and installed for dynamic streaming switch |
-| HTML5 video tag HLS player | For Apple and HLS compatible devices/software on the iPhone page |
-
-Simple basic auth for protecting the content. But only in Source Output right now. The RTMP Stream input does not have authentication.
-TLS 1.2 secured with a rating of A+ on ssllabs (2018-07)
-
-[Kubernertes](https://kubernetes.io/) instructions can be found in the [**Kubernertes folder**](kubernetes/kubernetes.md)
+A self-contained **live-streaming server** you can deploy with Docker Compose or Kubernetes.
+Push a stream from OBS, watch it at multiple qualities in your browser, and monitor all active
+streams through a protected dashboard.
 
 ---
 
-## Contents
+## v2 – Modern stack (current)
 
-- [**Versions**](#versions)
-- [**How to use**](#how-to-use)
-  - [Build and run the image](#build-and-run-the-image)
-  - [Access The Services](#access-the-services)
-- [**Default Parameter**](#default-parameter)
-- [**Change default configuration**](#set-configuration)
-  - [Create new passwords](#create-new-passwords)
-    - [Ubuntu](#ubuntu)
-    - [CentOS/ToDO](#todo)
-- [**Kubernertes**](kubernetes/kubernetes.md)
+The v2 rewrite replaces the old NGINX-RTMP single-container setup with three focused services:
+
+| Service | Technology | Role |
+|---------|-----------|------|
+| **mediamtx** | [MediaMTX](https://github.com/bluenviron/mediamtx) + FFmpeg | RTMP ingest, multi-quality transcoding, HLS output, REST stats API |
+| **dashboard** | Node.js / Express | JWT-protected web UI – stream list, bitrate, viewers, uptime |
+| **nginx** | nginx:alpine | TLS termination, reverse proxy (optional in K8s – use Ingress instead) |
+
+### Features
+
+- **Multiple concurrent streams** – any number of keys can be pushed simultaneously to `rtmp://<host>/live/<key>`
+- **Multi-quality transcoding** – FFmpeg automatically produces `source`, `720p`, and `360p` HLS variants per stream
+- **Protected dashboard** – JWT-based login; shows live bitrate, viewer count, quality variants, and uptime per stream
+- **Real-time updates** – Server-Sent Events push stream stats to the browser every 2 seconds without polling
+- **Docker Compose** deployment for single-server use
+- **Kubernetes** manifests in [`kubernetes/v2/`](kubernetes/v2/README.md)
+
+### Quick start (Docker Compose)
+
+```bash
+# 1. Clone and enter the repo
+git clone https://github.com/Peuserik/hdw-rtmp.git && cd hdw-rtmp
+
+# 2. Configure
+cp .env.example .env
+# Edit .env – set DASHBOARD_PASSWORD and JWT_SECRET
+
+# 3. Place TLS certificates in ./tls/
+#    (fullchain.pem + privkey.pem – e.g. from Let's Encrypt)
+
+# 4. Start
+docker compose up -d
+```
+
+### Access
+
+| URL | Purpose |
+|-----|---------|
+| `https://localhost/` | Dashboard login |
+| `rtmp://localhost/live/<key>` | RTMP stream input (OBS, etc.) |
+| `https://localhost/hls/transcoded/<key>_720p/index.m3u8` | HLS 720p direct link |
+| `https://localhost/hls/transcoded/<key>_360p/index.m3u8` | HLS 360p direct link |
+| `https://localhost/hls/live/<key>/index.m3u8` | HLS source quality |
+
+### Dashboard credentials
+
+Set via environment variables (see `.env.example`):
+
+```
+DASHBOARD_USER=admin
+DASHBOARD_PASSWORD=<your password>
+JWT_SECRET=<random 32-byte hex string>
+```
+
+### Kubernetes
+
+See [`kubernetes/v2/README.md`](kubernetes/v2/README.md) for full deployment instructions.
 
 ---
 
-## Versions
+## v1 – Legacy stack
 
-* nginx version: 1.16.0
-* [rtmp-module for nginx](https://github.com/sergey-dryabzhinsky/nginx-rtmp-module "sergey-dryabzhinsky/nginx-rtmp-module"): master branch
-* Ubuntu: 18.04
-* [hdw player free](https://www.hdwplayer.com/): 3.0
-* [dash player](https://github.com/Dash-Industry-Forum/dash.js): latest
-* [**Kubernertes 1.9,1.11,1.12**](kubernetes/kubernetes.md) testet
----
+> The v1 single-container stack (NGINX + nginx-rtmp-module + HDW / dash.js players) is preserved
+> below for reference. New deployments should use the v2 setup above.
 
-## How to use
 
 ### Build and run the image
 
@@ -197,5 +221,5 @@ docker run -d --name rtmp -v $(pwd)/tls:/usr/local/nginx/conf/ssl -e STREAMUSER=
 
 # ToDo
 
-variant added
-To lazy to continue right now.
+- [ ] Add CentOS password generation instructions.
+- [ ] Add RTMP authentication support.

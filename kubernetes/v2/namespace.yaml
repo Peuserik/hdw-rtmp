@@ -1,0 +1,8 @@
+---
+# kubernetes/v2/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp

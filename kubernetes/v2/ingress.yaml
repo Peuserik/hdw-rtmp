@@ -1,0 +1,49 @@
+---
+# kubernetes/v2/ingress.yaml
+# HTTPS ingress for the dashboard and HLS streams.
+# Prerequisites:
+#   - An Ingress controller (e.g. ingress-nginx)
+#   - cert-manager for automatic TLS certificates
+#
+# !! IMPORTANT: Replace ALL occurrences of "stream.example.com" below (lines
+# !! marked with "replace with your domain") before applying.  Missing even one
+# !! occurrence will cause TLS certificate provisioning to fail.
+#
+# Apply:  kubectl apply -f kubernetes/v2/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stream-ingress
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"   # SSE support
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"        # SSE support
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"        # adjust as needed
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - stream.example.com   # replace with your domain
+      secretName: stream-tls
+  rules:
+    - host: stream.example.com   # replace with your domain
+      http:
+        paths:
+          # Dashboard (auth, API, SSE)
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard
+                port:
+                  number: 3000
+          # HLS streams from MediaMTX
+          - path: /hls
+            pathType: Prefix
+            backend:
+              service:
+                name: mediamtx
+                port:
+                  number: 8888
