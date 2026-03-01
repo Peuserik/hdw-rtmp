@@ -1,0 +1,10 @@
+# Dockerfile.mediamtx
+# Extends the official MediaMTX image with FFmpeg and the transcoding script.
+FROM bluenviron/mediamtx:latest
+
+# FFmpeg is required for multi-quality transcoding
+RUN apk add --no-cache ffmpeg
+
+# Copy the transcoding script
+COPY transcode.sh /app/transcode.sh
+RUN chmod +x /app/transcode.sh

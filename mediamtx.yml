@@ -1,0 +1,59 @@
+###############################################################################
+# hdw-rtmp v2 – MediaMTX configuration
+# https://github.com/bluenviron/mediamtx
+###############################################################################
+
+logLevel: info
+logDestinations: [stdout]
+
+# REST API – used by the dashboard to read stream stats
+api: yes
+apiAddress: :9997
+
+# Prometheus metrics (optional)
+metrics: yes
+metricsAddress: :9998
+
+###############################################################################
+# Protocols
+###############################################################################
+
+# RTMP ingest – streamers push here (e.g. OBS → rtmp://server/live/<key>)
+rtmp: yes
+rtmpAddress: :1935
+rtmpEncryption: "no"
+
+# HLS output – browsers / VLC pull from here
+hls: yes
+hlsAddress: :8888
+hlsEncryption: no
+hlsVariant: lowLatency
+hlsSegmentCount: 7
+hlsSegmentDuration: 1s
+hlsPartDuration: 200ms
+hlsSegmentMaxSize: 50M
+hlsAlwaysRemux: no
+
+# RTSP (optional)
+rtsp: yes
+rtspAddress: :8554
+
+# WebRTC (optional, disabled by default)
+webrtc: no
+
+###############################################################################
+# Stream paths
+###############################################################################
+paths:
+
+  # ── Source streams ──────────────────────────────────────────────────────────
+  # Streamers publish to  rtmp://<server>/live/<name>
+  # FFmpeg is started automatically to produce multi-quality variants.
+  "~^live/.+$":
+    runOnPublish: "/app/transcode.sh $MTX_PATH"
+    runOnPublishRestart: yes
+
+  # ── Transcoded variants ──────────────────────────────────────────────────────
+  # Created by transcode.sh; pattern: transcoded/<name>_(360p|720p|source)
+  # Matched separately so the publish hook is NOT triggered again.
+  "~^transcoded/.+$": {}

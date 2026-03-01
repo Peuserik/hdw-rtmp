@@ -1,0 +1,53 @@
+---
+# kubernetes/v2/dashboard-deployment.yaml
+# Node.js dashboard: auth, stream stats, SSE live updates
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+    app.kubernetes.io/component: dashboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dashboard
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      containers:
+        - name: dashboard
+          image: peuserik/hdw-rtmp-dashboard:latest  # built from dashboard/Dockerfile
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: stream-config
+            - secretRef:
+                name: stream-secrets
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

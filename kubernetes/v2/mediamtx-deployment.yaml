@@ -1,0 +1,100 @@
+---
+# kubernetes/v2/mediamtx-deployment.yaml
+# MediaMTX: RTMP ingest, HLS output, REST API, FFmpeg transcoding
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediamtx
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+    app.kubernetes.io/component: mediamtx
+spec:
+  replicas: 1   # RTMP state is per-pod; scale horizontally only with push/pull
+  selector:
+    matchLabels:
+      app: mediamtx
+  template:
+    metadata:
+      labels:
+        app: mediamtx
+    spec:
+      containers:
+        - name: mediamtx
+          image: peuserik/hdw-rtmp-mediamtx:latest  # built from Dockerfile.mediamtx
+          imagePullPolicy: Always
+          ports:
+            - name: rtmp
+              containerPort: 1935
+              protocol: TCP
+            - name: rtsp
+              containerPort: 8554
+              protocol: TCP
+            - name: hls
+              containerPort: 8888
+              protocol: TCP
+            - name: api
+              containerPort: 9997
+              protocol: TCP
+          volumeMounts:
+            - name: mediamtx-config
+              mountPath: /mediamtx.yml
+              subPath: mediamtx.yml
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /v3/paths/list
+              port: 9997
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /v3/paths/list
+              port: 9997
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+      volumes:
+        - name: mediamtx-config
+          configMap:
+            name: mediamtx-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mediamtx-config
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+data:
+  mediamtx.yml: |
+    logLevel: info
+    logDestinations: [stdout]
+    api: yes
+    apiAddress: :9997
+    metrics: yes
+    metricsAddress: :9998
+    rtmp: yes
+    rtmpAddress: :1935
+    rtmpEncryption: "no"
+    hls: yes
+    hlsAddress: :8888
+    hlsVariant: lowLatency
+    hlsSegmentCount: 7
+    hlsSegmentDuration: 1s
+    hlsPartDuration: 200ms
+    hlsSegmentMaxSize: 50M
+    rtsp: yes
+    rtspAddress: :8554
+    webrtc: no
+    paths:
+      "~^live/.+$":
+        runOnPublish: "/app/transcode.sh $MTX_PATH"
+        runOnPublishRestart: yes
+      "~^transcoded/.+$": {}

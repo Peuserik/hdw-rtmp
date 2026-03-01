@@ -1,57 +1,78 @@
 # hdw-rtmp
 
-A Docker image that bundles **NGINX with the RTMP module**, **FFmpeg**, and three browser-based video players into a single, self-contained live-streaming server.
-
-## What is this?
-
-This repository provides everything you need to run your own live-streaming server:
-
-- **Ingest**: Accept a live video stream over RTMP (e.g. from OBS Studio or SimpleScreenRecorder) on port 1935.
-- **Transcode**: FFmpeg automatically re-encodes the incoming stream into two quality levels (native resolution and a 640×360 low-bandwidth variant).
-- **Serve**: Expose the transcoded stream as HLS and MPEG-DASH for wide client compatibility, and over RTMP for software players such as VLC.
-- **Watch**: Three built-in web players let you watch the stream right in your browser, all protected by HTTP Basic Auth over TLS.
-- **Deploy**: Ready-made Kubernetes manifests (including a stateful NFS-backed scaling example) are included in the [`kubernetes/`](kubernetes/kubernetes.md) folder.
-
-## Built-in players
-
-| Player | URL (default) | Description |
-| ------ | ------------- | ----------- |
-| [dash.js](https://github.com/Dash-Industry-Forum/dash.js) | `https://localhost/` | MPEG-DASH player with adaptive bitrate switching. |
-| [HDW Player Free](https://www.hdwplayer.com/) | `https://localhost/hdw.html` | Flash-based RTMP player. |
-| HTML5 HLS | `https://localhost/iPhone.html` | Native HLS player for Apple/mobile devices. |
-
-Basic Auth protects the web players and HLS/DASH endpoints. The RTMP input port (1935) is unauthenticated by default.
-
-TLS (HTTPS) is required — HTTP requests are automatically redirected to HTTPS.
-
-For Kubernetes deployment instructions see the [**Kubernetes folder**](kubernetes/kubernetes.md).
+A self-contained **live-streaming server** you can deploy with Docker Compose or Kubernetes.
+Push a stream from OBS, watch it at multiple qualities in your browser, and monitor all active
+streams through a protected dashboard.
 
 ---
 
-## Contents
+## v2 – Modern stack (current)
 
-- [**Versions**](#versions)
-- [**How to use**](#how-to-use)
-  - [Build and run the image](#build-and-run-the-image)
-  - [Access The Services](#access-the-services)
-- [**Default Parameter**](#default-parameter)
-- [**Change default configuration**](#set-configuration)
-  - [Create new passwords](#create-new-passwords)
-- [**Kubernetes**](kubernetes/kubernetes.md)
+The v2 rewrite replaces the old NGINX-RTMP single-container setup with three focused services:
+
+| Service | Technology | Role |
+|---------|-----------|------|
+| **mediamtx** | [MediaMTX](https://github.com/bluenviron/mediamtx) + FFmpeg | RTMP ingest, multi-quality transcoding, HLS output, REST stats API |
+| **dashboard** | Node.js / Express | JWT-protected web UI – stream list, bitrate, viewers, uptime |
+| **nginx** | nginx:alpine | TLS termination, reverse proxy (optional in K8s – use Ingress instead) |
+
+### Features
+
+- **Multiple concurrent streams** – any number of keys can be pushed simultaneously to `rtmp://<host>/live/<key>`
+- **Multi-quality transcoding** – FFmpeg automatically produces `source`, `720p`, and `360p` HLS variants per stream
+- **Protected dashboard** – JWT-based login; shows live bitrate, viewer count, quality variants, and uptime per stream
+- **Real-time updates** – Server-Sent Events push stream stats to the browser every 2 seconds without polling
+- **Docker Compose** deployment for single-server use
+- **Kubernetes** manifests in [`kubernetes/v2/`](kubernetes/v2/README.md)
+
+### Quick start (Docker Compose)
+
+```bash
+# 1. Clone and enter the repo
+git clone https://github.com/Peuserik/hdw-rtmp.git && cd hdw-rtmp
+
+# 2. Configure
+cp .env.example .env
+# Edit .env – set DASHBOARD_PASSWORD and JWT_SECRET
+
+# 3. Place TLS certificates in ./tls/
+#    (fullchain.pem + privkey.pem – e.g. from Let's Encrypt)
+
+# 4. Start
+docker compose up -d
+```
+
+### Access
+
+| URL | Purpose |
+|-----|---------|
+| `https://localhost/` | Dashboard login |
+| `rtmp://localhost/live/<key>` | RTMP stream input (OBS, etc.) |
+| `https://localhost/hls/transcoded/<key>_720p/index.m3u8` | HLS 720p direct link |
+| `https://localhost/hls/transcoded/<key>_360p/index.m3u8` | HLS 360p direct link |
+| `https://localhost/hls/live/<key>/index.m3u8` | HLS source quality |
+
+### Dashboard credentials
+
+Set via environment variables (see `.env.example`):
+
+```
+DASHBOARD_USER=admin
+DASHBOARD_PASSWORD=<your password>
+JWT_SECRET=<random 32-byte hex string>
+```
+
+### Kubernetes
+
+See [`kubernetes/v2/README.md`](kubernetes/v2/README.md) for full deployment instructions.
 
 ---
 
-## Versions
+## v1 – Legacy stack
 
-* nginx version: 1.16.0
-* [rtmp-module for nginx](https://github.com/sergey-dryabzhinsky/nginx-rtmp-module "sergey-dryabzhinsky/nginx-rtmp-module"): master branch
-* Ubuntu: 18.04
-* [hdw player free](https://www.hdwplayer.com/): 3.0
-* [dash player](https://github.com/Dash-Industry-Forum/dash.js): latest
-* [**Kubernetes 1.9, 1.11, 1.12**](kubernetes/kubernetes.md) tested
----
+> The v1 single-container stack (NGINX + nginx-rtmp-module + HDW / dash.js players) is preserved
+> below for reference. New deployments should use the v2 setup above.
 
-## How to use
 
 ### Build and run the image
 

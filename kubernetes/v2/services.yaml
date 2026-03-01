@@ -1,0 +1,72 @@
+---
+# kubernetes/v2/services.yaml
+# Services for all components
+
+# ── MediaMTX ──────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: mediamtx
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+    app.kubernetes.io/component: mediamtx
+spec:
+  selector:
+    app: mediamtx
+  ports:
+    - name: rtmp
+      port: 1935
+      targetPort: 1935
+      protocol: TCP
+    - name: rtsp
+      port: 8554
+      targetPort: 8554
+      protocol: TCP
+    - name: hls
+      port: 8888
+      targetPort: 8888
+      protocol: TCP
+    - name: api
+      port: 9997
+      targetPort: 9997
+      protocol: TCP
+---
+# ── Dashboard ─────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+    app.kubernetes.io/component: dashboard
+spec:
+  selector:
+    app: dashboard
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+---
+# ── Public LoadBalancer (RTMP + HTTP/HTTPS) ───────────────────────────────────
+# For RTMP (TCP) a LoadBalancer service is the simplest exposure method.
+# HTTP/HTTPS is better handled via an Ingress + cert-manager.
+apiVersion: v1
+kind: Service
+metadata:
+  name: rtmp-lb
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app: mediamtx
+  ports:
+    - name: rtmp
+      port: 1935
+      targetPort: 1935
+      protocol: TCP

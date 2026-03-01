@@ -8,3 +8,12 @@ jsconfig.json
 # test material
 testing/
 
+### Node.js ###
+dashboard/node_modules/
+
+### Environment ###
+.env
+
+### TLS certificates (never commit private keys) ###
+tls/
+

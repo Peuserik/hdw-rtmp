@@ -1,0 +1,12 @@
+---
+# kubernetes/v2/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stream-config
+  namespace: stream
+  labels:
+    app.kubernetes.io/name: hdw-rtmp
+data:
+  MEDIAMTX_API_URL: "http://mediamtx:9997"
+  PORT: "3000"
